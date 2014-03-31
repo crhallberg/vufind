@@ -10,7 +10,7 @@ If you're on the same page/record/search as another user, this will show their m
 
 Installation
 ------------
-Switch to this branch in VuFind, enable a Bootstrap theme.
+Switch to/Merge with this branch in VuFind, enable a Bootstrap theme.
 
 You'll need Node.js to run the server: http://nodejs.org/
 
