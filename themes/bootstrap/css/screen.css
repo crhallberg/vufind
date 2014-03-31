@@ -71,3 +71,26 @@ div.xml.collapsed > div { display:none;margin-left:2px }
     width:75%;
   }
 }
+
+[id^=mmom] {
+  background-image:url('../images/cursor.png');
+  background-position:center;
+  background-repeat:no-repeat;
+  font:6pt Verdana;
+  font-weight:bold;
+  padding-top:23px;
+  left:0;
+  position:absolute;
+  text-align:center;
+  top:0;
+  width:100px;
+}
+.aprilfoolsbanner {
+  background:#FFA;
+  left:0;
+  padding:10px;
+  position:fixed;
+  text-align:center;
+  top:0;
+  width:100%;
+}
