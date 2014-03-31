@@ -1,13 +1,19 @@
-VuFind
-======
+VuFind MMO
+==========
 
 Introduction
 ------------
-VuFind is an open source discovery environment for searching a collection of
-records.  To learn more, visit http://vufind.org.
 
+For April Fool's Day, I cooked up some simple fun in VuFind. If you're on the same page/record/search as another user, this will show their mouse cursor on your screen. Movement and all!
 
 Installation
 ------------
+Switch to this branch in VuFind, enable a Bootstrap theme.
+You'll need Node.js to run the server: http://nodejs.org/
+Create a folder on your server, with the server.js in it (found in the Bootstrap theme under js)
 
-See online documentation at http://vufind.org/wiki/vufind2:installation_notes
+npm install socket.io
+npm install forever
+forever start server.js
+
+Enjoy. :)

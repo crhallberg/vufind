@@ -1,4 +1,4 @@
-var socket = io.connect('http://153.104.170.183:4114');
+var socket = io.connect('http://localhost:4114');
 var mmoroomless = true;
 socket.on('move', function (data) {
   if($('#mmom'+data.id).length == 0) {
