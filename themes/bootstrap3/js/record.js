@@ -224,6 +224,11 @@ $(document).ready(function(){
     var params = extractClassParams(this);
     return Lightbox.get(params['controller'], 'SMS', {id:id});
   });
+  // YO lightbox
+  $('#yo-record').click(function() {
+    var params = extractClassParams(this);
+    return Lightbox.get(params['controller'], 'YO', {id:id});
+  });
   // Tag lightbox
   $('#tagRecord').click(function() {
     var id = $('.hiddenId')[0].value;

@@ -436,6 +436,62 @@ class AbstractRecord extends AbstractBase
     }
 
     /**
+     * YO action - Allows the YO form to appear.
+     *
+     * @return \Zend\View\Model\ViewModel
+     */
+    public function yoAction()
+    {
+        // Retrieve the record driver:
+        $driver = $this->loadRecord();
+
+        // Create a view model:
+        $view = $this->createViewModel();
+        $view->useRecaptcha = $this->recaptcha()->active('yo');
+        // Process form submission:
+        if ($this->formWasSubmitted('submit', $view->useRecaptcha)) {
+            // Send parameters back to view so form can be re-populated:
+
+            // Attempt to send the email and show an appropriate flash message:
+            try {
+                $config = $this->getConfig();
+                $id = $this->params()->fromPost('id');
+                $serverUrl = $this->getViewRenderer()->plugin('serverurl');
+                $url = 'http://api.justyo.co/yo/';
+                $username = $this->params()->fromPost('username');
+                $data = array(
+                    'api_token' => $config->Yo->api_token,
+                    'username' => $username,
+                    'link' => rtrim(
+                        $serverUrl(
+                            $this->url()->fromRoute('record', array('id'=>$id))
+                        ),
+                        '/'
+                    )
+                );
+
+                $options = array(
+                    'http' => array(
+                        'header'  =>
+                            "Content-type: application/x-www-form-urlencoded\r\n",
+                        'method'  => 'POST',
+                        'content' => http_build_query($data),
+                    ),
+                );
+                $context  = stream_context_create($options);
+                return file_get_contents($url, false, $context);
+            } catch (MailException $e) {
+                $this->flashMessenger()->setNamespace('error')
+                    ->addMessage($e->getMessage());
+            }
+        }
+
+        // Display the template:
+        $view->setTemplate('record/yo');
+        return $view;
+    }
+
+    /**
      * Show citations for the current record.
      *
      * @return \Zend\View\Model\ViewModel
