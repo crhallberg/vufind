@@ -44,10 +44,18 @@
   cursor:pointer;
 }
 
+.progress .progress-bar {
+  background-color: #0FF;
+  text-shadow: 1px  1px 0px #000,
+               1px -1px 0px #000,
+              -1px  1px 0px #000,
+              -1px -1px 0px #000;
+}
+
 #view #preview {max-width:100%}
 .front {position:absolute;left:10%;top:150px;width:80%;z-index:5}
 
-#zoomy {background:#F0F0F0}
+#zoomy {background:#000;}
 
 #allFiles .btn {display:block;margin:auto;max-width:400px}
 #download-button .details {font-size:14px}
