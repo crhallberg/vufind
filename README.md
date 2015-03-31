@@ -1,13 +1,14 @@
-VuFind
-======
+Retro VuFind
+============
 
 Introduction
 ------------
-VuFind is an open source discovery environment for searching a collection of
-records.  To learn more, visit http://vufind.org.
+We as an open-source community are always striving to provide the most modern and user-friendly experience a library discovery layer can offer. Here at the VuFind Offices, we lounged around on our money and talked about the future design of VuFind. We reached far ahead to design a new theme for VuFind that will be modern, fast and gorgeous. We reached to far ahead: into the past.
 
+*Introducing the new default VuFind theme: telestrap*
 
-Installation
+Combining modern web speeds with the low bandwidth technology of Teletext&tm;, we've created the most forward looking theme imaginable. Enjoy.
+
+Credits
 ------------
-
-See online documentation at http://vufind.org/wiki/vufind2:installation_notes
+http://code.steadman.io/telestrap/
