@@ -1,0 +1,65 @@
+@import "bootstrap/bootstrap";
+
+* {border-radius: 0 !important;}
+
+a {border-bottom: 1px dashed transparent;}
+.close {
+  color: #FFF;
+  opacity: 1;
+}
+.form-control:focus {box-shadow: 0 0 0 1px #FF0;}
+.help-block {color: #DDD;}
+a.list-group-item, label, legend {color: #888;}
+mark {background: #FF0;}
+
+.modal-content {background: #000;}
+.modal-dialog {border: 1px dashed #FFF;}
+.modal-header {border-bottom-style: dashed;}
+.well {background: #555 !important;}
+
+.sidebar {
+  .list-group:not(.filters) .title {
+    cursor: pointer;
+    &.collapsed:after {content: '\25BC';}
+    &:after {
+      content: '\25B2';
+      float: right;
+    }
+  }
+}
+
+.slider.slider-horizontal {
+  width: 100% !important;
+  .slider-handle {
+    background: transparent;
+    border: 2px solid #FF0;
+    opacity: 1;
+    &:active {background: #FF0;}
+  }
+  .slider-selection {background: #FF0;}
+  .slider-track {background: #FFF;}
+}
+
+.twitter-typeahead {
+  background: #333;
+  vertical-align: top;
+  .tt-hint {display: none}
+  @media (max-width: 767px) {width: 100%;}
+}
+.tt-dropdown-menu {.list-group;}
+.tt-suggestion {
+  .list-group-item;
+  background: #333;
+  border-radius: 0 !important;
+  border-style: dashed;
+  color: #FFF;
+  cursor: pointer;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  &.active {white-space: inherit;}
+  &.tt-cursor {
+    background-color: #FF0;
+    color: #000;
+  }
+  p {margin: 0;}
+}
