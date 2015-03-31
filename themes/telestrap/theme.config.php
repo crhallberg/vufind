@@ -5,7 +5,7 @@ return array(
         'telestrap.css',
     ),
     'less' => array(
-        'active' => true,
+        'active' => false,
         'compiled.less'
     ),
 );
