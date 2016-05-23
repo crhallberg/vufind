@@ -2,6 +2,10 @@ module.exports = function(grunt) {
   require('jit-grunt')(grunt); // Just in time library loading
 
   grunt.initConfig({
+    // File deletion
+    clean: {
+      uglify: ['themes/bootstrap3/js/vendor.min.js']
+    },
     // LESS compilation
     less: {
       compile: {
@@ -99,9 +103,7 @@ module.exports = function(grunt) {
         }
       }
     },
-    clean: {
-      uglify: ['themes/bootstrap3/js/vendor.min.js']
-    },
+    // JS styling
     eslint: {
       options: {
         configFile: '.eslintrc.json'
@@ -113,7 +115,7 @@ module.exports = function(grunt) {
       options: {
         mangle: false
       },
-      vendor_min: { // after running uglify:vendor_min, change your theme.config.php
+      vendor_min_bs3: { // after running uglify:vendor_min, change your theme.config.php
         files: {    // to only load vendor.min.js instead of all the js/vendor files
           'themes/bootstrap3/js/vendor.min.js': [
             'themes/bootstrap3/js/vendor/jquery.min.js',       // these two need to go first
@@ -124,9 +126,42 @@ module.exports = function(grunt) {
           ]
         }
       }
+    },
+    compress: {
+      copy: {
+        root_theme: {
+          expand: true,
+          src: 'themes/root',
+          dest: 'dest/' + (grunt.option('theme') || 'new') + '_pkgd'
+        },
+        from_theme: {
+          expand: true,
+          src: 'themes/' + grunt.option('from'),
+          dest: 'dest/' + (grunt.option('theme') || 'new') + '_pkgd'
+        },
+      },
     }
   });
 
-  grunt.registerTask('default', ['less', 'uglify']);
   grunt.registerTask('js', ['clean:uglify', 'eslint', 'uglify']);
+  grunt.registerTask('default', ['less', 'js']);
+
+  grunt.registerMultiTask('compress', function() {
+    if (!grunt.option('theme')) {
+      grunt.log.writeln('Please specify a theme with --theme=X');
+      return false;
+    }
+    grunt.log.writeln('Compressing theme: ' + grunt.option('theme') + ' to ' + grunt.option('theme') + '_pkgd');
+    grunt.log.writeln('- Copying root');
+    grunt.log.writeln('- Copying parent');
+    grunt.log.writeln('- Copying parent');
+    grunt.log.writeln('- Copying theme');
+    grunt.log.writeln('- Compressing LESS to css/');
+    grunt.log.writeln('- Removing LESS source');
+    grunt.log.writeln('- Compressing JS to temp/');
+    grunt.log.writeln('- Removing JS source');
+    grunt.log.writeln('- Moving JS from temp/ to js/');
+    grunt.log.writeln('- Removing temp/');
+    grunt.log.writeln('- Creating theme.config.php');
+  });
 };
