@@ -4,7 +4,23 @@ module.exports = function(grunt) {
   grunt.initConfig({
     // File deletion
     clean: {
-      uglify: ['themes/bootstrap3/js/vendor.min.js']
+      uglify: ['themes/bootstrap3/js/vendor.min.js'],
+      js_src: ['themes/' + grunt.option('theme') + '_pkgd/js/'],
+      less_src: [
+        'themes/' + grunt.option('theme') + '_pkgd/less/',
+        'themes/' + grunt.option('theme') + '_pkgd/sass/',
+      ]
+    },
+    // File duplication
+    copy: {
+      from_theme: {
+        expand: true,
+        cwd: 'themes/<%= grunt.task.current.args[0] %>/',
+        src: ['**'],
+        dest: 'themes/<%= grunt.task.current.args[1] %>_pkgd/',
+        process: function () {
+        }
+      }
     },
     // LESS compilation
     less: {
@@ -14,12 +30,12 @@ module.exports = function(grunt) {
           compress: true,
           modifyVars: {
             'fa-font-path': '"fonts"',
-            'img-path': '"../images"',
+            'img-path': '"../images"'
           }
         },
         files: {
           "themes/bootstrap3/css/compiled.css": "themes/bootstrap3/less/bootstrap.less",
-          "themes/bootprint3/css/compiled.css": "themes/bootprint3/less/bootprint.less",
+          "themes/bootprint3/css/compiled.css": "themes/bootprint3/less/bootprint.less"
         }
       }
     },
@@ -125,22 +141,39 @@ module.exports = function(grunt) {
             '!themes/bootstrap3/js/vendor/bootstrap-slider.js' // skip, not "use strict" compatible
           ]
         }
+      },
+      in_theme: {
+        files: {
+          'themes/<%= grunt.option("theme") %>/<%= grunt.option("temp") %>/vufind.min.js': [
+            'themes/' + grunt.option('theme') + '/js/*.js'
+          ]
+        }
       }
     },
-    compress: {
-      copy: {
-        root_theme: {
-          expand: true,
-          src: 'themes/root',
-          dest: 'dest/' + (grunt.option('theme') || 'new') + '_pkgd'
+    search: {
+      move_optional_js: {
+        files: {
+          src: ['themes/<%= grunt.task.current.args[0] %>/templates/**']
         },
-        from_theme: {
-          expand: true,
-          src: 'themes/' + grunt.option('from'),
-          dest: 'dest/' + (grunt.option('theme') || 'new') + '_pkgd'
-        },
-      },
-    }
+        options: {
+          searchString: /([\w-\\\/\.]+\.js)/g,
+          logFile: "/dev/null",
+          onComplete: function(matches) {
+            var optionals = [];
+            for (var i in matches.matches) {
+              for (var j=0; j<matches.matches[i].length; j++) {
+                if (optionals.indexOf(matches.matches[i][j].match) < 0) {
+                  optionals.push(matches.matches[i][j].match);
+                }
+              }
+            }
+            console.log(optionals);
+          }
+        }
+      }
+    },
+
+    compress: { theme: {} }
   });
 
   grunt.registerTask('js', ['clean:uglify', 'eslint', 'uglify']);
@@ -148,20 +181,55 @@ module.exports = function(grunt) {
 
   grunt.registerMultiTask('compress', function() {
     if (!grunt.option('theme')) {
-      grunt.log.writeln('Please specify a theme with --theme=X');
+      grunt.log.error('Please specify a theme with --theme=X');
       return false;
     }
-    grunt.log.writeln('Compressing theme: ' + grunt.option('theme') + ' to ' + grunt.option('theme') + '_pkgd');
-    grunt.log.writeln('- Copying root');
-    grunt.log.writeln('- Copying parent');
-    grunt.log.writeln('- Copying parent');
-    grunt.log.writeln('- Copying theme');
-    grunt.log.writeln('- Compressing LESS to css/');
-    grunt.log.writeln('- Removing LESS source');
-    grunt.log.writeln('- Compressing JS to temp/');
-    grunt.log.writeln('- Removing JS source');
-    grunt.log.writeln('- Moving JS from temp/ to js/');
-    grunt.log.writeln('- Removing temp/');
-    grunt.log.writeln('- Creating theme.config.php');
+
+    var newTheme = grunt.option('theme') + '_pkgd';
+    var pkgdFolder = 'themes/' + grunt.option('theme') + '_pkgd';
+    grunt.log.writeln('Compressing theme: ' + grunt.option('theme') + ' to ' + newTheme);
+
+    var fs = require('fs');
+    if (fs.existsSync(pkgdFolder)) {
+      // grunt.file.delete(pkgdFolder);
+    }
+
+    grunt.log.write('- Generating theme tree... ');
+    var theme = grunt.option('theme');
+    var themeStack = [theme];
+    while (theme !== 'root') {
+      var config = fs.readFileSync('themes/'+theme+'/theme.config.php', 'UTF-8');
+      theme = config.toLowerCase().replace(/[\s"']/g, '').match(/extends=>(\w+)/)[1];
+      themeStack.push(theme);
+    }
+    for (var i=0; i<themeStack.length; i++) {
+      grunt.log.ok().write('- Copying theme ('+themeStack[i]+')... ');
+      grunt.file.recurse('themes/'+themeStack[i], function callback (abspath, rootdir, subdir, filename) {
+        var dest = abspath.replace('themes/'+themeStack[i], pkgdFolder);
+        if (!dest.match(/\/css\//) && !fs.existsSync(dest)) {
+          grunt.log.debug('('+themeStack[i]+') '+dest);
+          // grunt.file.copy(abspath, dest);
+        }
+      });
+    }
+    grunt.log.ok().write('- Compressing LESS to css/... ');
+    var lessOptions = grunt.config.get('less.compile');
+    lessOptions.options.paths.unshift(pkgdFolder + '/less');
+    lessOptions.files[pkgdFolder + '/css/compiled.css'] = pkgdFolder + '/less/compiled.less';
+    grunt.config.set('less.compile', lessOptions);
+    grunt.task.run('less:compile');
+    grunt.log.ok().write('- Removing LESS source... ');
+    grunt.task.run('clean:less_src');
+    grunt.log.ok().write('- Scanning templates for optional JS... ');
+    grunt.task.run('search:move_optional_js:' + newTheme);
+    grunt.log.ok().write('- Moving optional JS to temp/... ');
+    grunt.log.ok().write('- Compressing JS to temp/... ');
+    grunt.option('temp', 'temp');
+    // grunt.task.run('uglify:in_theme');
+    grunt.log.ok().write('- Removing JS source... ');
+    // grunt.task.run('clean:js_src');
+    grunt.log.ok().write('- Moving JS from temp/ to js/... ');
+    grunt.log.ok().write('- Removing temp/... ');
+    grunt.log.ok().write('- Creating theme.config.php... ');
   });
 };
