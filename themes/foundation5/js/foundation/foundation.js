@@ -82,8 +82,8 @@
 
   var add_namespace = function (str) {
     var parts = str.split('-'),
-        i = parts.length,
-        arr = [];
+      i = parts.length,
+      arr = [];
 
     while (i--) {
       if (i !== 0) {
@@ -104,20 +104,20 @@
 
   var bindings = function (method, options) {
     var self = this,
-        bind = function(){
-          var $this = S(this),
-              should_bind_events = !$this.data(self.attr_name(true) + '-init');
-          $this.data(self.attr_name(true) + '-init', $.extend({}, self.settings, (options || method), self.data_options($this)));
+      bind = function(){
+        var $this = S(this),
+          should_bind_events = !$this.data(self.attr_name(true) + '-init');
+        $this.data(self.attr_name(true) + '-init', $.extend({}, self.settings, (options || method), self.data_options($this)));
 
-          if (should_bind_events) {
-            self.events(this);
-          }
-        };
+        if (should_bind_events) {
+          self.events(this);
+        }
+      };
 
-    if (S(this.scope).is('[' + this.attr_name() +']')) {
+    if (S(this.scope).is('[' + this.attr_name() + ']')) {
       bind.call(this.scope);
     } else {
-      S('[' + this.attr_name() +']', this.scope).each(bind);
+      S('[' + this.attr_name() + ']', this.scope).each(bind);
     }
     // # Patch to fix #5043 to move this *after* the if/else clause in order for Backbone and similar frameworks to have improved control over event binding and data-options updating.
     if (typeof method === 'string') {
@@ -136,7 +136,7 @@
 
       if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)) {
         var src = this.attr( 'src' ),
-            param = src.match( /\?/ ) ? '&' : '?';
+          param = src.match( /\?/ ) ? '&' : '?';
 
         param += 'random=' + (new Date()).getTime();
         this.attr('src', src + param);
@@ -158,48 +158,48 @@
   /*! matchMedia() polyfill - Test a CSS media type/query in JS. Authors & copyright (c) 2012: Scott Jehl, Paul Irish, Nicholas Zakas, David Knight. Dual MIT/BSD license */
 
   window.matchMedia || (window.matchMedia = function() {
-      "use strict";
+    "use strict";
 
       // For browsers that support matchMedium api such as IE 9 and webkit
-      var styleMedia = (window.styleMedia || window.media);
+    var styleMedia = (window.styleMedia || window.media);
 
       // For those that don't support matchMedium
-      if (!styleMedia) {
-          var style       = document.createElement('style'),
-              script      = document.getElementsByTagName('script')[0],
-              info        = null;
+    if (!styleMedia) {
+      var style = document.createElement('style'),
+        script = document.getElementsByTagName('script')[0],
+        info = null;
 
-          style.type  = 'text/css';
-          style.id    = 'matchmediajs-test';
+      style.type = 'text/css';
+      style.id = 'matchmediajs-test';
 
-          script.parentNode.insertBefore(style, script);
+      script.parentNode.insertBefore(style, script);
 
           // 'style.currentStyle' is used by IE <= 8 and 'window.getComputedStyle' for all other browsers
-          info = ('getComputedStyle' in window) && window.getComputedStyle(style, null) || style.currentStyle;
+      info = ('getComputedStyle' in window) && window.getComputedStyle(style, null) || style.currentStyle;
 
-          styleMedia = {
-              matchMedium: function(media) {
-                  var text = '@media ' + media + '{ #matchmediajs-test { width: 1px; } }';
+      styleMedia = {
+        matchMedium: function(media) {
+          var text = '@media ' + media + '{ #matchmediajs-test { width: 1px; } }';
 
                   // 'style.styleSheet' is used by IE <= 8 and 'style.textContent' for all other browsers
-                  if (style.styleSheet) {
-                      style.styleSheet.cssText = text;
-                  } else {
-                      style.textContent = text;
-                  }
+          if (style.styleSheet) {
+            style.styleSheet.cssText = text;
+          } else {
+            style.textContent = text;
+          }
 
                   // Test if media query is true or false
-                  return info.width === '1px';
-              }
-          };
-      }
-
-      return function(media) {
-          return {
-              matches: styleMedia.matchMedium(media || 'all'),
-              media: media || 'all'
-          };
+          return info.width === '1px';
+        }
       };
+    }
+
+    return function(media) {
+      return {
+        matches: styleMedia.matchMedium(media || 'all'),
+        media: media || 'all'
+      };
+    };
   }());
 
   /*
@@ -219,64 +219,64 @@
   // http://paulirish.com/2011/requestanimationframe-for-smart-animating/
   // http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
 
-  var animating,
+    var animating,
       lastTime = 0,
       vendors = ['webkit', 'moz'],
       requestAnimationFrame = window.requestAnimationFrame,
       cancelAnimationFrame = window.cancelAnimationFrame,
       jqueryFxAvailable = 'undefined' !== typeof jQuery.fx;
 
-  for (; lastTime < vendors.length && !requestAnimationFrame; lastTime++) {
-    requestAnimationFrame = window[ vendors[lastTime] + 'RequestAnimationFrame' ];
-    cancelAnimationFrame = cancelAnimationFrame ||
+    for (; lastTime < vendors.length && !requestAnimationFrame; lastTime++) {
+      requestAnimationFrame = window[ vendors[lastTime] + 'RequestAnimationFrame' ];
+      cancelAnimationFrame = cancelAnimationFrame ||
       window[ vendors[lastTime] + 'CancelAnimationFrame' ] ||
       window[ vendors[lastTime] + 'CancelRequestAnimationFrame' ];
-  }
+    }
 
-  function raf() {
-    if (animating) {
-      requestAnimationFrame(raf);
+    function raf() {
+      if (animating) {
+        requestAnimationFrame(raf);
 
-      if (jqueryFxAvailable) {
-        jQuery.fx.tick();
+        if (jqueryFxAvailable) {
+          jQuery.fx.tick();
+        }
       }
     }
-  }
 
-  if (requestAnimationFrame) {
+    if (requestAnimationFrame) {
     // use rAF
-    window.requestAnimationFrame = requestAnimationFrame;
-    window.cancelAnimationFrame = cancelAnimationFrame;
+      window.requestAnimationFrame = requestAnimationFrame;
+      window.cancelAnimationFrame = cancelAnimationFrame;
 
-    if (jqueryFxAvailable) {
-      jQuery.fx.timer = function (timer) {
-        if (timer() && jQuery.timers.push(timer) && !animating) {
-          animating = true;
-          raf();
-        }
-      };
+      if (jqueryFxAvailable) {
+        jQuery.fx.timer = function (timer) {
+          if (timer() && jQuery.timers.push(timer) && !animating) {
+            animating = true;
+            raf();
+          }
+        };
 
-      jQuery.fx.stop = function () {
-        animating = false;
-      };
-    }
-  } else {
+        jQuery.fx.stop = function () {
+          animating = false;
+        };
+      }
+    } else {
     // polyfill
-    window.requestAnimationFrame = function (callback) {
-      var currTime = new Date().getTime(),
-        timeToCall = Math.max(0, 16 - (currTime - lastTime)),
-        id = window.setTimeout(function () {
-          callback(currTime + timeToCall);
-        }, timeToCall);
-      lastTime = currTime + timeToCall;
-      return id;
-    };
+      window.requestAnimationFrame = function (callback) {
+        var currTime = new Date().getTime(),
+          timeToCall = Math.max(0, 16 - (currTime - lastTime)),
+          id = window.setTimeout(function () {
+            callback(currTime + timeToCall);
+          }, timeToCall);
+        lastTime = currTime + timeToCall;
+        return id;
+      };
 
-    window.cancelAnimationFrame = function (id) {
-      clearTimeout(id);
-    };
+      window.cancelAnimationFrame = function (id) {
+        clearTimeout(id);
+      };
 
-  }
+    }
 
   }( $ ));
 
@@ -298,31 +298,31 @@
   };
 
   window.Foundation = {
-    name : 'Foundation',
+    name: 'Foundation',
 
-    version : '5.5.3',
+    version: '5.5.3',
 
-    media_queries : {
-      'small'       : new MediaQuery('.foundation-mq-small'),
-      'small-only'  : new MediaQuery('.foundation-mq-small-only'),
-      'medium'      : new MediaQuery('.foundation-mq-medium'),
-      'medium-only' : new MediaQuery('.foundation-mq-medium-only'),
-      'large'       : new MediaQuery('.foundation-mq-large'),
-      'large-only'  : new MediaQuery('.foundation-mq-large-only'),
-      'xlarge'      : new MediaQuery('.foundation-mq-xlarge'),
-      'xlarge-only' : new MediaQuery('.foundation-mq-xlarge-only'),
-      'xxlarge'     : new MediaQuery('.foundation-mq-xxlarge')
+    media_queries: {
+      'small': new MediaQuery('.foundation-mq-small'),
+      'small-only': new MediaQuery('.foundation-mq-small-only'),
+      'medium': new MediaQuery('.foundation-mq-medium'),
+      'medium-only': new MediaQuery('.foundation-mq-medium-only'),
+      'large': new MediaQuery('.foundation-mq-large'),
+      'large-only': new MediaQuery('.foundation-mq-large-only'),
+      'xlarge': new MediaQuery('.foundation-mq-xlarge'),
+      'xlarge-only': new MediaQuery('.foundation-mq-xlarge-only'),
+      'xxlarge': new MediaQuery('.foundation-mq-xxlarge')
     },
 
-    stylesheet : $('<style></style>').appendTo('head')[0].sheet,
+    stylesheet: $('<style></style>').appendTo('head')[0].sheet,
 
-    global : {
-      namespace : undefined
+    global: {
+      namespace: undefined
     },
 
-    init : function (scope, libraries, method, options, response) {
+    init: function (scope, libraries, method, options, response) {
       var args = [scope, method, options, response],
-          responses = [];
+        responses = [];
 
       // check RTL
       this.rtl = /rtl/i.test(S('html').attr('dir'));
@@ -357,16 +357,16 @@
       return scope;
     },
 
-    init_lib : function (lib, args) {
+    init_lib: function (lib, args) {
       if (this.libs.hasOwnProperty(lib)) {
         this.patch(this.libs[lib]);
 
         if (args && args.hasOwnProperty(lib)) {
-            if (typeof this.libs[lib].settings !== 'undefined') {
-              $.extend(true, this.libs[lib].settings, args[lib]);
-            } else if (typeof this.libs[lib].defaults !== 'undefined') {
-              $.extend(true, this.libs[lib].defaults, args[lib]);
-            }
+          if (typeof this.libs[lib].settings !== 'undefined') {
+            $.extend(true, this.libs[lib].settings, args[lib]);
+          } else if (typeof this.libs[lib].defaults !== 'undefined') {
+            $.extend(true, this.libs[lib].defaults, args[lib]);
+          }
           return this.libs[lib].init.apply(this.libs[lib], [this.scope, args[lib]]);
         }
 
@@ -377,7 +377,7 @@
       return function () {};
     },
 
-    patch : function (lib) {
+    patch: function (lib) {
       lib.scope = this.scope;
       lib.namespace = this.global.namespace;
       lib.rtl = this.rtl;
@@ -388,9 +388,9 @@
       lib['S'] = this.utils.S;
     },
 
-    inherit : function (scope, methods) {
+    inherit: function (scope, methods) {
       var methods_arr = methods.split(' '),
-          i = methods_arr.length;
+        i = methods_arr.length;
 
       while (i--) {
         if (this.utils.hasOwnProperty(methods_arr[i])) {
@@ -399,7 +399,7 @@
       }
     },
 
-    set_namespace : function () {
+    set_namespace: function () {
 
       // Description:
       //    Don't bother reading the namespace out of the meta tag
@@ -421,10 +421,10 @@
       this.global.namespace = ( namespace === undefined || /false/i.test(namespace) ) ? '' : namespace;
     },
 
-    libs : {},
+    libs: {},
 
     // methods that can be inherited in libraries
-    utils : {
+    utils: {
 
       // Description:
       //    Fast Selector wrapper returns jQuery object. Only use where getElementById
@@ -440,7 +440,7 @@
       // Returns:
       //    Element (jQuery Object): jQuery object containing elements matching the
       //    selector within the scope.
-      S : S,
+      S: S,
 
       // Description:
       //    Executes a function a max of once every n milliseconds
@@ -452,7 +452,7 @@
       //
       // Returns:
       //    Lazy_function (Function): Function with throttling applied.
-      throttle : function (func, delay) {
+      throttle: function (func, delay) {
         var timer = null;
 
         return function () {
@@ -481,7 +481,7 @@
       //
       // Returns:
       //    Lazy_function (Function): Function with debouncing applied.
-      debounce : function (func, delay, immediate) {
+      debounce: function (func, delay, immediate) {
         var timeout, result;
         return function () {
           var context = this, args = arguments;
@@ -510,18 +510,18 @@
       // Returns:
       //    Options (Javascript Object): Contents of the element's data-options
       //    attribute.
-      data_options : function (el, data_attr_name) {
+      data_options: function (el, data_attr_name) {
         data_attr_name = data_attr_name || 'options';
         var opts = {}, ii, p, opts_arr,
-            data_options = function (el) {
-              var namespace = Foundation.global.namespace;
+          data_options = function (el) {
+            var namespace = Foundation.global.namespace;
 
-              if (namespace.length > 0) {
-                return el.data(namespace + '-' + data_attr_name);
-              }
+            if (namespace.length > 0) {
+              return el.data(namespace + '-' + data_attr_name);
+            }
 
-              return el.data(data_attr_name);
-            };
+            return el.data(data_attr_name);
+          };
 
         var cached_options = data_options(el);
 
@@ -577,7 +577,7 @@
       //    Foundation.media_queries
       //
       //    Class (String): Class name for the generated <meta> tag
-      register_media : function (media, media_class) {
+      register_media: function (media, media_class) {
         if (Foundation.media_queries[media] === undefined) {
           $('head').append('<meta class="' + media_class + '"/>');
           Foundation.media_queries[media] = removeQuotes($('.' + media_class).css('font-family'));
@@ -592,7 +592,7 @@
       //
       //    Media (String): Optional media query string for the CSS rule to be
       //    nested under.
-      add_custom_rule : function (rule, media) {
+      add_custom_rule: function (rule, media) {
         if (media === undefined && Foundation.stylesheet) {
           Foundation.stylesheet.insertRule(rule, Foundation.stylesheet.cssRules.length);
         } else {
@@ -612,18 +612,18 @@
       //    Image (jQuery Object): Image(s) to check if loaded.
       //
       //    Callback (Function): Function to execute when image is fully loaded.
-      image_loaded : function (images, callback) {
+      image_loaded: function (images, callback) {
         var self = this,
-            unloaded = images.length;
+          unloaded = images.length;
 
         function pictures_has_height(images) {
           var pictures_number = images.length;
 
           for (var i = pictures_number - 1; i >= 0; i--) {
-            if(images.attr('height') === undefined) {
+            if (images.attr('height') === undefined) {
               return false;
-            };
-          };
+            }
+          }
 
           return true;
         }
@@ -651,7 +651,7 @@
       //
       // Returns:
       //    Rand (String): Pseudo-random, alphanumeric string.
-      random_str : function () {
+      random_str: function () {
         if (!this.fidx) {
           this.fidx = 0;
         }
@@ -668,7 +668,7 @@
       //
       // Returns:
       //    (Boolean): Whether the media query passes or not
-      match : function (mq) {
+      match: function (mq) {
         return window.matchMedia(mq).matches;
       },
 
@@ -678,43 +678,43 @@
       // Returns:
       //    (Boolean): Whether the media query passes or not
 
-      is_small_up : function () {
+      is_small_up: function () {
         return this.match(Foundation.media_queries.small);
       },
 
-      is_medium_up : function () {
+      is_medium_up: function () {
         return this.match(Foundation.media_queries.medium);
       },
 
-      is_large_up : function () {
+      is_large_up: function () {
         return this.match(Foundation.media_queries.large);
       },
 
-      is_xlarge_up : function () {
+      is_xlarge_up: function () {
         return this.match(Foundation.media_queries.xlarge);
       },
 
-      is_xxlarge_up : function () {
+      is_xxlarge_up: function () {
         return this.match(Foundation.media_queries.xxlarge);
       },
 
-      is_small_only : function () {
+      is_small_only: function () {
         return !this.is_medium_up() && !this.is_large_up() && !this.is_xlarge_up() && !this.is_xxlarge_up();
       },
 
-      is_medium_only : function () {
+      is_medium_only: function () {
         return this.is_medium_up() && !this.is_large_up() && !this.is_xlarge_up() && !this.is_xxlarge_up();
       },
 
-      is_large_only : function () {
+      is_large_only: function () {
         return this.is_medium_up() && this.is_large_up() && !this.is_xlarge_up() && !this.is_xxlarge_up();
       },
 
-      is_xlarge_only : function () {
+      is_xlarge_only: function () {
         return this.is_medium_up() && this.is_large_up() && this.is_xlarge_up() && !this.is_xxlarge_up();
       },
 
-      is_xxlarge_only : function () {
+      is_xxlarge_only: function () {
         return this.is_medium_up() && this.is_large_up() && this.is_xlarge_up() && this.is_xxlarge_up();
       }
     }

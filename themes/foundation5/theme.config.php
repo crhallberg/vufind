@@ -12,10 +12,11 @@ return array(
     'vendor/jquery.min.js',
     'vendor/modernizr.js', // html5 for older browsers
     'vendor/fastclick.js',  // improves experience for mobile users
-    'foundation.min.js', // This includes all components
+    'vendor/foundation.min.js', // This includes all components
     //	'foundation/foundation.js', // Activate this plus individual FNDTN component scripts below, if desired
     //	'foundation/foundation.topbar.js',
-    'autocomplete.js',
+    'lib/form-attr-polyfill.js', // input[form] polyfill, cannot load conditionally, since we need all versions of IE
+    'lib/autocomplete.js',
     'vendor/rc4.js',
     'common.js',
     'lightbox.js',

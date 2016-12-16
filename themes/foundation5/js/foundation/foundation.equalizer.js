@@ -1,43 +1,43 @@
-;(function ($, window, document, undefined) {
+(function ($, window, document, undefined) {
   'use strict';
 
   Foundation.libs.equalizer = {
-    name : 'equalizer',
+    name: 'equalizer',
 
-    version : '5.5.3',
+    version: '5.5.3',
 
-    settings : {
-      use_tallest : true,
-      before_height_change : $.noop,
-      after_height_change : $.noop,
-      equalize_on_stack : false,
+    settings: {
+      use_tallest: true,
+      before_height_change: $.noop,
+      after_height_change: $.noop,
+      equalize_on_stack: false,
       act_on_hidden_el: false
     },
 
-    init : function (scope, method, options) {
+    init: function (scope, method, options) {
       Foundation.inherit(this, 'image_loaded');
       this.bindings(method, options);
       this.reflow();
     },
 
-    events : function () {
+    events: function () {
       this.S(window).off('.equalizer').on('resize.fndtn.equalizer', function (e) {
         this.reflow();
       }.bind(this));
     },
 
-    equalize : function (equalizer) {
+    equalize: function (equalizer) {
       var isStacked = false,
-          group = equalizer.data('equalizer'),
-          settings = equalizer.data(this.attr_name(true)+'-init') || this.settings,
-          vals,
-          firstTopOffset;
+        group = equalizer.data('equalizer'),
+        settings = equalizer.data(this.attr_name(true) + '-init') || this.settings,
+        vals,
+        firstTopOffset;
 
       if (settings.act_on_hidden_el) {
-        vals = group ? equalizer.find('['+this.attr_name()+'-watch="'+group+'"]') : equalizer.find('['+this.attr_name()+'-watch]');
+        vals = group ? equalizer.find('[' + this.attr_name() + '-watch="' + group + '"]') : equalizer.find('[' + this.attr_name() + '-watch]');
       }
       else {
-        vals = group ? equalizer.find('['+this.attr_name()+'-watch="'+group+'"]:visible') : equalizer.find('['+this.attr_name()+'-watch]:visible');
+        vals = group ? equalizer.find('[' + this.attr_name() + '-watch="' + group + '"]:visible') : equalizer.find('[' + this.attr_name() + '-watch]:visible');
       }
       
       if (vals.length === 0) {
@@ -75,13 +75,13 @@
       equalizer.trigger('after-height-change.fndtn.equalizer');
     },
 
-    reflow : function () {
+    reflow: function () {
       var self = this;
 
       this.S('[' + this.attr_name() + ']', this.scope).each(function () {
         var $eq_target = $(this),
-            media_query = $eq_target.data('equalizer-mq'),
-            ignore_media_query = true;
+          media_query = $eq_target.data('equalizer-mq'),
+          ignore_media_query = true;
 
         if (media_query) {
           media_query = 'is_' + media_query.replace(/-/g, '_');

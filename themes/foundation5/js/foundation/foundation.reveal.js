@@ -1,52 +1,52 @@
-;(function ($, window, document, undefined) {
+(function ($, window, document, undefined) {
   'use strict';
 
   var openModals = [];
 
   Foundation.libs.reveal = {
-    name : 'reveal',
+    name: 'reveal',
 
-    version : '5.5.3',
+    version: '5.5.3',
 
-    locked : false,
+    locked: false,
 
-    settings : {
-      animation : 'fadeAndPop',
-      animation_speed : 250,
-      close_on_background_click : true,
-      close_on_esc : true,
-      dismiss_modal_class : 'close-reveal-modal',
-      multiple_opened : false,
-      bg_class : 'reveal-modal-bg',
-      root_element : 'body',
-      open : function(){},
-      opened : function(){},
-      close : function(){},
-      closed : function(){},
+    settings: {
+      animation: 'fadeAndPop',
+      animation_speed: 250,
+      close_on_background_click: true,
+      close_on_esc: true,
+      dismiss_modal_class: 'close-reveal-modal',
+      multiple_opened: false,
+      bg_class: 'reveal-modal-bg',
+      root_element: 'body',
+      open: function(){},
+      opened: function(){},
+      close: function(){},
+      closed: function(){},
       on_ajax_error: $.noop,
-      bg : $('.reveal-modal-bg'),
-      css : {
-        open : {
-          'opacity' : 0,
-          'visibility' : 'visible',
-          'display' : 'block'
+      bg: $('.reveal-modal-bg'),
+      css: {
+        open: {
+          'opacity': 0,
+          'visibility': 'visible',
+          'display': 'block'
         },
-        close : {
-          'opacity' : 1,
-          'visibility' : 'hidden',
-          'display' : 'none'
+        close: {
+          'opacity': 1,
+          'visibility': 'hidden',
+          'display': 'none'
         }
       }
     },
 
-    init : function (scope, method, options) {
+    init: function (scope, method, options) {
       $.extend(true, this.settings, method, options);
       this.bindings(method, options);
     },
 
-    events : function (scope) {
+    events: function (scope) {
       var self = this,
-          S = self.S;
+        S = self.S;
 
       S(this.scope)
         .off('.reveal')
@@ -55,8 +55,8 @@
 
           if (!self.locked) {
             var element = S(this),
-                ajax = element.data(self.data_attr('reveal-ajax')),
-                replaceContentSel = element.data(self.data_attr('reveal-replace-content'));
+              ajax = element.data(self.data_attr('reveal-ajax')),
+              replaceContentSel = element.data(self.data_attr('reveal-replace-content'));
 
             self.locked = true;
 
@@ -64,7 +64,7 @@
               self.open.call(self, element);
             } else {
               var url = ajax === true ? element.attr('href') : ajax;
-              self.open.call(self, element, {url : url}, { replaceContentSel : replaceContentSel });
+              self.open.call(self, element, {url: url}, { replaceContentSel: replaceContentSel });
             }
           }
         });
@@ -74,7 +74,7 @@
           e.preventDefault();
           if (!self.locked) {
             var settings = S('[' + self.attr_name() + '].open').data(self.attr_name(true) + '-init') || self.settings,
-                bg_clicked = S(e.target)[0] === S('.' + settings.bg_class)[0];
+              bg_clicked = S(e.target)[0] === S('.' + settings.bg_class)[0];
 
             if (bg_clicked) {
               if (settings.close_on_background_click) {
@@ -113,16 +113,16 @@
     },
 
     // PATCH #3: turning on key up capture only when a reveal window is open
-    key_up_on : function (scope) {
+    key_up_on: function (scope) {
       var self = this;
 
       // PATCH #1: fixing multiple keyup event trigger from single key press
       self.S('body').off('keyup.fndtn.reveal').on('keyup.fndtn.reveal', function ( event ) {
         var open_modal = self.S('[' + self.attr_name() + '].open'),
-            settings = open_modal.data(self.attr_name(true) + '-init') || self.settings ;
+          settings = open_modal.data(self.attr_name(true) + '-init') || self.settings;
         // PATCH #2: making sure that the close event can be called only while unlocked,
         //           so that multiple keyup.fndtn.reveal events don't prevent clean closing of the reveal window.
-        if ( settings && event.which === 27  && settings.close_on_esc && !self.locked) { // 27 is the keycode for the Escape key
+        if ( settings && event.which === 27 && settings.close_on_esc && !self.locked) { // 27 is the keycode for the Escape key
           self.close.call(self, open_modal);
         }
       });
@@ -131,14 +131,14 @@
     },
 
     // PATCH #3: turning on key up capture only when a reveal window is open
-    key_up_off : function (scope) {
+    key_up_off: function (scope) {
       this.S('body').off('keyup.fndtn.reveal');
       return true;
     },
 
-    open : function (target, ajax_settings) {
+    open: function (target, ajax_settings) {
       var self = this,
-          modal;
+        modal;
 
       if (target) {
         if (typeof target.selector !== 'undefined') {
@@ -169,7 +169,7 @@
             .data('offset', this.cache_offset(modal));
         }
 
-        modal.attr('tabindex','0').attr('aria-hidden','false');
+        modal.attr('tabindex', '0').attr('aria-hidden', 'false');
 
         this.key_up_on(modal);    // PATCH #3: turning on key up capture only when a reveal window is open
 
@@ -186,13 +186,13 @@
 
         if (typeof ajax_settings === 'string') {
           ajax_settings = {
-            url : ajax_settings
+            url: ajax_settings
           };
         }
 
         var openModal = function() {
-          if(open_modal.length > 0) {
-            if(settings.multiple_opened) {
+          if (open_modal.length > 0) {
+            if (settings.multiple_opened) {
               self.to_back(open_modal);
             } else {
               self.hide(open_modal, settings.css.close);
@@ -200,7 +200,7 @@
           }
 
           // bl: add the open_modal that isn't already in the background to the openModals array
-          if(settings.multiple_opened) {
+          if (settings.multiple_opened) {
             openModals.push(modal);
           }
 
@@ -212,7 +212,7 @@
         } else {
           var old_success = typeof ajax_settings.success !== 'undefined' ? ajax_settings.success : null;
           $.extend(ajax_settings, {
-            success : function (data, textStatus, jqXHR) {
+            success: function (data, textStatus, jqXHR) {
               if ( $.isFunction(old_success) ) {
                 var result = old_success(data, textStatus, jqXHR);
                 if (typeof result == 'string') {
@@ -236,7 +236,7 @@
           // check for if user initalized with error callback
           if (settings.on_ajax_error !== $.noop) {
             $.extend(ajax_settings, {
-              error : settings.on_ajax_error
+              error: settings.on_ajax_error
             });
           }
 
@@ -246,15 +246,15 @@
       self.S(window).trigger('resize');
     },
 
-    close : function (modal) {
+    close: function (modal) {
       var modal = modal && modal.length ? modal : this.S(this.scope),
-          open_modals = this.S('[' + this.attr_name() + '].open'),
-          settings = modal.data(this.attr_name(true) + '-init') || this.settings,
-          self = this;
+        open_modals = this.S('[' + this.attr_name() + '].open'),
+        settings = modal.data(this.attr_name(true) + '-init') || this.settings,
+        self = this;
 
       if (open_modals.length > 0) {
 
-        modal.removeAttr('tabindex','0').attr('aria-hidden','true');
+        modal.removeAttr('tabindex', '0').attr('aria-hidden', 'true');
 
         this.locked = true;
         this.key_up_off(modal);   // PATCH #3: turning on key up capture only when a reveal window is open
@@ -269,14 +269,14 @@
         if (settings.multiple_opened) {
           var isCurrent = modal.is(':not(.toback)');
           self.hide(modal, settings.css.close, settings);
-          if(isCurrent) {
+          if (isCurrent) {
             // remove the last modal since it is now closed
             openModals.pop();
           } else {
             // if this isn't the current modal, then find it in the array and remove it
             openModals = $.grep(openModals, function(elt) {
-              var isThis = elt[0]===modal[0];
-              if(isThis) {
+              var isThis = elt[0] === modal[0];
+              if (isThis) {
                 // since it's not currently in the front, put it in the front now that it is hidden
                 // so that if it's re-opened, it won't be .toback
                 self.to_front(modal);
@@ -285,7 +285,7 @@
             });
           }
           // finally, show the next modal in the stack, if there is one
-          if(openModals.length>0) {
+          if (openModals.length > 0) {
             self.to_front(openModals[openModals.length - 1]);
           }
         } else {
@@ -294,7 +294,7 @@
       }
     },
 
-    close_targets : function () {
+    close_targets: function () {
       var base = '.' + this.settings.dismiss_modal_class;
 
       if (this.settings.close_on_background_click) {
@@ -304,7 +304,7 @@
       return base;
     },
 
-    toggle_bg : function (modal, state) {
+    toggle_bg: function (modal, state) {
       if (this.S('.' + this.settings.bg_class).length === 0) {
         this.settings.bg = $('<div />', {'class': this.settings.bg_class})
           .appendTo('body').hide();
@@ -320,12 +320,12 @@
       }
     },
 
-    show : function (el, css) {
+    show: function (el, css) {
       // is modal
       if (css) {
         var settings = el.data(this.attr_name(true) + '-init') || this.settings,
-            root_element = settings.root_element,
-            context = this;
+          root_element = settings.root_element,
+          context = this;
 
         if (el.parent(root_element).length === 0) {
           var placeholder = el.wrap('<div style="display: none;" />').parent();
@@ -376,7 +376,7 @@
           }, settings.animation_speed / 2);
         }
 
-        return el.css(css).show().css({opacity : 1}).addClass('open').trigger('opened.fndtn.reveal');
+        return el.css(css).show().css({opacity: 1}).addClass('open').trigger('opened.fndtn.reveal');
       }
 
       var settings = this.settings;
@@ -391,19 +391,19 @@
       return el.show();
     },
 
-    to_back : function(el) {
+    to_back: function(el) {
       el.addClass('toback');
     },
 
-    to_front : function(el) {
+    to_front: function(el) {
       el.removeClass('toback');
     },
 
-    hide : function (el, css) {
+    hide: function (el, css) {
       // is modal
       if (css) {
         var settings = el.data(this.attr_name(true) + '-init'),
-            context = this;
+          context = this;
         settings = settings || this.settings;
 
         var animData = getAnimationData(settings.animation);
@@ -427,7 +427,7 @@
         }
 
         if (animData.fade) {
-          var end_css = {opacity : 0};
+          var end_css = {opacity: 0};
 
           return setTimeout(function () {
             return el
@@ -452,9 +452,9 @@
       return el.hide();
     },
 
-    close_video : function (e) {
+    close_video: function (e) {
       var video = $('.flex-video', e.target),
-          iframe = $('iframe', video);
+        iframe = $('iframe', video);
 
       if (iframe.length > 0) {
         iframe.attr('data-src', iframe[0].src);
@@ -463,9 +463,9 @@
       }
     },
 
-    open_video : function (e) {
+    open_video: function (e) {
       var video = $('.flex-video', e.target),
-          iframe = video.find('iframe');
+        iframe = video.find('iframe');
 
       if (iframe.length > 0) {
         var data_src = iframe.attr('data-src');
@@ -480,7 +480,7 @@
       }
     },
 
-    data_attr : function (str) {
+    data_attr: function (str) {
       if (this.namespace.length > 0) {
         return this.namespace + '-' + str;
       }
@@ -488,7 +488,7 @@
       return str;
     },
 
-    cache_offset : function (modal) {
+    cache_offset: function (modal) {
       var offset = modal.show().height() + parseInt(modal.css('top'), 10) + modal.scrollY;
 
       modal.hide();
@@ -496,11 +496,11 @@
       return offset;
     },
 
-    off : function () {
+    off: function () {
       $(this.scope).off('.fndtn.reveal');
     },
 
-    reflow : function () {}
+    reflow: function () {}
   };
 
   /*
@@ -514,9 +514,9 @@
     var fade = /fade/i.test(str);
     var pop = /pop/i.test(str);
     return {
-      animate : fade || pop,
-      pop : pop,
-      fade : fade
+      animate: fade || pop,
+      pop: pop,
+      fade: fade
     };
   }
 }(jQuery, window, window.document));

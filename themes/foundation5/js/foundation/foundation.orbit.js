@@ -1,4 +1,4 @@
-;(function ($, window, document, undefined) {
+(function ($, window, document, undefined) {
   'use strict';
 
   var noop = function () {};
@@ -10,16 +10,16 @@
     }
 
     var self = this,
-        container,
-        slides_container = el,
-        number_container,
-        bullets_container,
-        timer_container,
-        idx = 0,
-        animate,
-        timer,
-        locked = false,
-        adjust_height_after = false;
+      container,
+      slides_container = el,
+      number_container,
+      bullets_container,
+      timer_container,
+      idx = 0,
+      animate,
+      timer,
+      locked = false,
+      adjust_height_after = false;
 
     self.slides = function () {
       return slides_container.children(settings.slide_selector);
@@ -77,7 +77,7 @@
         container.append(bullets_container);
         bullets_container.wrap('<div class="orbit-bullets-container"></div>');
         self.slides().each(function (idx, el) {
-          var bullet = $('<li>').attr('data-orbit-slide', idx).on('click', self.link_bullet);;
+          var bullet = $('<li>').attr('data-orbit-slide', idx).on('click', self.link_bullet);
           bullets_container.append(bullet);
         });
       }
@@ -86,13 +86,13 @@
 
     self._goto = function (next_idx, start_timer) {
       // if (locked) {return false;}
-      if (next_idx === idx) {return false;}
-      if (typeof timer === 'object') {timer.restart();}
+      if (next_idx === idx) { return false; }
+      if (typeof timer === 'object') { timer.restart(); }
       var slides = self.slides();
 
       var dir = 'next';
       locked = true;
-      if (next_idx < idx) {dir = 'prev';}
+      if (next_idx < idx) { dir = 'prev'; }
       if (next_idx >= slides.length) {
         if (!settings.circular) {
           return false;
@@ -120,9 +120,9 @@
         var unlock = function () {
           idx = next_idx;
           locked = false;
-          if (start_timer === true) {timer = self.create_timer(); timer.start();}
+          if (start_timer === true) { timer = self.create_timer(); timer.start(); }
           self.update_slide_number(idx);
-          slides_container.trigger('after-slide-change.fndtn.orbit', [{slide_number : idx, total_slides : slides.length}]);
+          slides_container.trigger('after-slide-change.fndtn.orbit', [{slide_number: idx, total_slides: slides.length}]);
           settings.after_slide_change(idx, slides.length);
         };
         if (slides_container.outerHeight() != next.outerHeight() && settings.variable_height) {
@@ -132,11 +132,11 @@
         }
       };
 
-      if (slides.length === 1) {callback(); return false;}
+      if (slides.length === 1) { callback(); return false; }
 
       var start_animation = function () {
-        if (dir === 'next') {animate.next(current, next, callback);}
-        if (dir === 'prev') {animate.prev(current, next, callback);}
+        if (dir === 'next') { animate.next(current, next, callback); }
+        if (dir === 'prev') { animate.prev(current, next, callback); }
       };
 
       if (next.outerHeight() > slides_container.outerHeight() && settings.variable_height) {
@@ -163,7 +163,7 @@
       var link = $(this).attr('data-orbit-link');
       if ((typeof link === 'string') && (link = $.trim(link)) != '') {
         var slide = container.find('[data-orbit-slide=' + link + ']');
-        if (slide.index() != -1) {self._goto(slide.index());}
+        if (slide.index() != -1) { self._goto(slide.index()); }
       }
     };
 
@@ -172,7 +172,7 @@
       if ((typeof index === 'string') && (index = $.trim(index)) != '') {
         if (isNaN(parseInt(index))) {
           var slide = container.find('[data-orbit-slide=' + index + ']');
-          if (slide.index() != -1) {self._goto(slide.index() + 1);}
+          if (slide.index() != -1) { self._goto(slide.index() + 1); }
         } else {
           self._goto(parseInt(index));
         }
@@ -213,10 +213,10 @@
     self.toggle_timer = function () {
       var t = container.find('.' + settings.timer_container_class);
       if (t.hasClass(settings.timer_paused_class)) {
-        if (typeof timer === 'undefined') {timer = self.create_timer();}
+        if (typeof timer === 'undefined') { timer = self.create_timer(); }
         timer.start();
       } else {
-        if (typeof timer === 'object') {timer.stop();}
+        if (typeof timer === 'object') { timer.stop(); }
       }
     };
 
@@ -241,13 +241,13 @@
       container.on('click', self.toggle_timer);
       if (settings.swipe) {
         container.on('touchstart.fndtn.orbit', function (e) {
-          if (!e.touches) {e = e.originalEvent;}
+          if (!e.touches) { e = e.originalEvent; }
           var data = {
-            start_page_x : e.touches[0].pageX,
-            start_page_y : e.touches[0].pageY,
-            start_time : (new Date()).getTime(),
-            delta_x : 0,
-            is_scrolling : undefined
+            start_page_x: e.touches[0].pageX,
+            start_page_y: e.touches[0].pageY,
+            start_time: (new Date()).getTime(),
+            delta_x: 0,
+            is_scrolling: undefined
           };
           container.data('swipe-transition', data);
           e.stopPropagation();
@@ -262,7 +262,7 @@
           }
 
           var data = container.data('swipe-transition');
-          if (typeof data === 'undefined') {data = {};}
+          if (typeof data === 'undefined') { data = {}; }
 
           data.delta_x = e.touches[0].pageX - data.start_page_x;
 
@@ -309,11 +309,11 @@
 
   var Timer = function (el, settings, callback) {
     var self = this,
-        duration = settings.timer_speed,
-        progress = el.find('.' + settings.timer_progress_class),
-        start,
-        timeout,
-        left = -1;
+      duration = settings.timer_speed,
+      progress = el.find('.' + settings.timer_progress_class),
+      start,
+      timeout,
+      left = -1;
 
     this.update_progress = function (w) {
       var new_progress = progress.clone();
@@ -331,11 +331,11 @@
     };
 
     this.start = function () {
-      if (!el.hasClass(settings.timer_paused_class)) {return true;}
+      if (!el.hasClass(settings.timer_paused_class)) { return true; }
       left = (left === -1) ? duration : left;
       el.removeClass(settings.timer_paused_class);
       start = new Date().getTime();
-      progress.animate({'width' : '100%'}, left, 'linear');
+      progress.animate({'width': '100%'}, left, 'linear');
       timeout = setTimeout(function () {
         self.restart();
         callback();
@@ -344,7 +344,7 @@
     };
 
     this.stop = function () {
-      if (el.hasClass(settings.timer_paused_class)) {return true;}
+      if (el.hasClass(settings.timer_paused_class)) { return true; }
       clearTimeout(timeout);
       el.addClass(settings.timer_paused_class);
       var end = new Date().getTime();
@@ -363,7 +363,7 @@
     animMargin[margin] = '0%';
 
     this.next = function (current, next, callback) {
-      current.animate({marginLeft : '-100%'}, duration);
+      current.animate({marginLeft: '-100%'}, duration);
       next.animate(animMargin, duration, function () {
         current.css(margin, '100%');
         callback();
@@ -371,7 +371,7 @@
     };
 
     this.prev = function (current, prev, callback) {
-      current.animate({marginLeft : '100%'}, duration);
+      current.animate({marginLeft: '100%'}, duration);
       prev.css(margin, '-100%');
       prev.animate(animMargin, duration, function () {
         current.css(margin, '100%');
@@ -386,16 +386,16 @@
     var margin = is_rtl ? 'marginRight' : 'marginLeft';
 
     this.next = function (current, next, callback) {
-      next.css({'margin' : '0%', 'opacity' : '0.01'});
-      next.animate({'opacity' :'1'}, duration, 'linear', function () {
+      next.css({'margin': '0%', 'opacity': '0.01'});
+      next.animate({'opacity': '1'}, duration, 'linear', function () {
         current.css('margin', '100%');
         callback();
       });
     };
 
     this.prev = function (current, prev, callback) {
-      prev.css({'margin' : '0%', 'opacity' : '0.01'});
-      prev.animate({'opacity' : '1'}, duration, 'linear', function () {
+      prev.css({'margin': '0%', 'opacity': '0.01'});
+      prev.animate({'opacity': '1'}, duration, 'linear', function () {
         current.css('margin', '100%');
         callback();
       });
@@ -405,57 +405,57 @@
   Foundation.libs = Foundation.libs || {};
 
   Foundation.libs.orbit = {
-    name : 'orbit',
+    name: 'orbit',
 
-    version : '5.5.3',
+    version: '5.5.3',
 
-    settings : {
-      animation : 'slide',
-      timer_speed : 10000,
-      pause_on_hover : true,
-      resume_on_mouseout : false,
-      next_on_click : true,
-      animation_speed : 500,
-      stack_on_small : false,
-      navigation_arrows : true,
-      slide_number : true,
-      slide_number_text : 'of',
-      container_class : 'orbit-container',
-      stack_on_small_class : 'orbit-stack-on-small',
-      next_class : 'orbit-next',
-      prev_class : 'orbit-prev',
-      timer_container_class : 'orbit-timer',
-      timer_paused_class : 'paused',
-      timer_progress_class : 'orbit-progress',
-      slides_container_class : 'orbit-slides-container',
-      preloader_class : 'preloader',
-      slide_selector : '*',
-      bullets_container_class : 'orbit-bullets',
-      bullets_active_class : 'active',
-      slide_number_class : 'orbit-slide-number',
-      caption_class : 'orbit-caption',
-      active_slide_class : 'active',
-      orbit_transition_class : 'orbit-transitioning',
-      bullets : true,
-      circular : true,
-      timer : true,
-      variable_height : false,
-      swipe : true,
-      before_slide_change : noop,
-      after_slide_change : noop
+    settings: {
+      animation: 'slide',
+      timer_speed: 10000,
+      pause_on_hover: true,
+      resume_on_mouseout: false,
+      next_on_click: true,
+      animation_speed: 500,
+      stack_on_small: false,
+      navigation_arrows: true,
+      slide_number: true,
+      slide_number_text: 'of',
+      container_class: 'orbit-container',
+      stack_on_small_class: 'orbit-stack-on-small',
+      next_class: 'orbit-next',
+      prev_class: 'orbit-prev',
+      timer_container_class: 'orbit-timer',
+      timer_paused_class: 'paused',
+      timer_progress_class: 'orbit-progress',
+      slides_container_class: 'orbit-slides-container',
+      preloader_class: 'preloader',
+      slide_selector: '*',
+      bullets_container_class: 'orbit-bullets',
+      bullets_active_class: 'active',
+      slide_number_class: 'orbit-slide-number',
+      caption_class: 'orbit-caption',
+      active_slide_class: 'active',
+      orbit_transition_class: 'orbit-transitioning',
+      bullets: true,
+      circular: true,
+      timer: true,
+      variable_height: false,
+      swipe: true,
+      before_slide_change: noop,
+      after_slide_change: noop
     },
 
-    init : function (scope, method, options) {
+    init: function (scope, method, options) {
       var self = this;
       this.bindings(method, options);
     },
 
-    events : function (instance) {
+    events: function (instance) {
       var orbit_instance = new Orbit(this.S(instance), this.S(instance).data('orbit-init'));
       this.S(instance).data(this.name + '-instance', orbit_instance);
     },
 
-    reflow : function () {
+    reflow: function () {
       var self = this;
 
       if (self.S(self.scope).is('[data-orbit]')) {
