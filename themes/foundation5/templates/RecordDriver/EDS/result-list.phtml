@@ -3,20 +3,30 @@
   $this->headLink()->appendStylesheet('EDS.css');
   $accessLevel = $this->driver->getAccessLevel();
   $restrictedView = empty($accessLevel) ? false : true;
-?>
+
+  $coverDetails = $this->record($this->driver)->getCoverDetails('result-list', 'medium', $this->recordLink()->getUrl($this->driver));
+  $thumbnail = false;
+  $thumbnailAlignment = $this->record($this->driver)->getThumbnailAlignment('result');
+  ob_start(); ?>
+  <div class="small-3 medium-2 columns <?=$thumbnailAlignment ?>">
+    <input type="hidden" value="<?=$this->escapeHtmlAttr($this->driver->getUniqueID())?>" class="hiddenId" />
+    <? if ($summThumb = $this->record($this->driver)->getThumbnail()): ?>
+        <a href="<?=$this->recordLink()->getUrl($this->driver)?>" class="_record_link">
+        <img src="<?=$this->escapeHtmlAttr($summThumb)?>" class="recordcover" alt="<?=$this->transEsc('Cover Image')?>"/>
+        </a>
+    <? else: ?>
+        <span class="recordcover pt-icon pt-<?=$this->driver->getPubTypeId()?>"></span>
+      <div><?=$this->driver->getPubType()?></div>
+    <? endif; ?>
+  </div>
+<? $thumbnail = ob_get_contents(); ?>
+<? ob_end_clean(); ?>
+
 <div class="small-11 columns source<?=$this->escapeHtmlAttr($this->driver->getSourceIdentifier())?> recordId<?=$this->driver->supportsAjaxStatus()?' ajaxItemId':''?>">
   <div class="row">
-    <div class="small-3 medium-2 columns left">
-      <input type="hidden" value="<?=$this->escapeHtmlAttr($this->driver->getUniqueID())?>" class="hiddenId" />
-      <? if ($summThumb = $this->record($this->driver)->getThumbnail()): ?>
-          <a href="<?=$this->recordLink()->getUrl($this->driver)?>" class="_record_link">
-          <img src="<?=$this->escapeHtmlAttr($summThumb)?>" class="recordcover" alt="<?=$this->transEsc('Cover Image')?>"/>
-          </a>
-      <? else: ?>
-          <span class="recordcover pt-icon pt-<?=$this->driver->getPubTypeId()?>"></span>
-        <div><?=$this->driver->getPubType()?></div>
-      <? endif; ?>
-    </div>
+    <? if ($thumbnail && $thumbnailAlignment == 'left'): ?>
+      <?=$thumbnail ?>
+    <? endif; ?>
     <div class="small-6 medium-7 columns middle">
       <?  $items  =  $this->driver->getItems();
         if (isset($items) && !empty($items)) :
@@ -118,4 +128,7 @@
         <? endforeach; ?>
       <? endif; ?>
     </div>
+    <? if ($thumbnail && $thumbnailAlignment == 'right'): ?>
+      <?=$thumbnail ?>
+    <? endif; ?>
   </div>

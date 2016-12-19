@@ -5,16 +5,16 @@
   $visualFacetSet = $this->recommend->getPivotFacetSet();
 
   if (isset($visualFacetSet->children)) {
-  $flarechildren = array();
+  $flarechildren = [];
 
   foreach ($visualFacetSet->children as $toplevelfacet) {
-    $toplevelinfo = array();
-    $toplevelchildren = array();
+    $toplevelinfo = [];
+    $toplevelchildren = [];
     $toplevelinfo['name'] = $toplevelfacet['value'];
     $toplevelinfo['field'] = $toplevelfacet['field'];
     $toplevelinfo['size'] = $toplevelfacet['count'];
     foreach($toplevelfacet['pivot'] as $secondlevelfacet) {
-      $secondlevelinfo = array();
+      $secondlevelinfo = [];
       $secondlevelinfo['name'] = $secondlevelfacet['value'];
       $secondlevelinfo['size'] = $secondlevelfacet['count'];
       $secondlevelinfo['field'] = $secondlevelfacet['field'];
@@ -90,7 +90,7 @@
         onechild.count = facetdata.count;
         onechild.field = facetdata.field;
         delete pivotdata.children[facetindex].children;
-        pivotdata.children[facetindex].children = new Array();
+        pivotdata.children[facetindex].children = new [];
         pivotdata.children[facetindex].children.push(onechild);
       } else {
         // Used to keep count of the total number of child
@@ -123,7 +123,7 @@
         // entire results, don't roll up any child facets.
         var morefacet = 0;
         var morecount = 0;
-        var resizedData = new Array();
+        var resizedData = new [];
         $.each(facetdata.children, function(childindex, childdata) {
           if (childdata && (childdata.size < totalbyfirstpivot * .05 && facetdata.size < totalbooks * .15 || childdata.size < totalbyfirstpivot * .02 && facetdata.size < totalbooks * .3 || childdata.size < totalbyfirstpivot * .01 && facetdata.size != totalbooks)) {
             morefacet += childdata.size;
@@ -152,7 +152,7 @@
           onechild.size = facetdata.size;
           onechild.count = facetdata.count;
           onechild.field = facetdata.field;
-          pivotdata.children[facetindex].children = new Array();
+          pivotdata.children[facetindex].children = new [];
           pivotdata.children[facetindex].children.push(onechild);
         } else {
           //If we're keeping the "More" facet, let's size it properly

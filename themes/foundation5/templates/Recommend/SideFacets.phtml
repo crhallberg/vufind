@@ -1,5 +1,10 @@
 <!-- recommend - SIDEFACETS.phtml -->
-<? $results = $this->recommend->getResults(); ?>
+<?
+  $this->headScript()->appendFile('facets.js');
+
+  $results = $this->recommend->getResults();
+  $options = $this->searchOptions($this->searchClassId);
+?>
 <? if ($results->getResultTotal() > 0): ?>
   <h4><?= $this->transEsc(isset($this->overrideSideFacetCaption) ? $this->overrideSideFacetCaption : 'Narrow Search') ?></h4>
 <? endif; ?>
@@ -22,7 +27,7 @@ if (count($checkboxFilters) > 0): ?>
   ?>
   <div class="checkboxFilter<? if ($shown == 0): ?> hide<? endif; ?>"><?= $html ?></div>
 <? endif; ?>
-<? $extraFilters = isset($this->extraSideFacetFilters) ? $this->extraSideFacetFilters : array(); ?>
+<? $extraFilters = isset($this->extraSideFacetFilters) ? $this->extraSideFacetFilters : []; ?>
 <? $collapsedFacets = $this->recommend->getCollapsedFacets() ?>
 <? $hierarchicalFacetSortOptions = $this->recommend->getHierarchicalFacetSortOptions() ?>
 <? $hierarchicalFacets = $this->recommend->getHierarchicalFacets() ?>
@@ -48,8 +53,8 @@ if (!empty($filterList)): ?>
           }
           ?>
           <li>
-            <a class="active" href="<?= $removeLink ?>">
-              <span class="pull-right"><i class="fa fa-times"></i></span>
+            <a class="active" href="<?= $removeLink ?>" title="<?=$this->transEsc('clear_tag_filter') ?>">
+              <span class="pull-right"><i class="fa fa-times" aria-hidden="true"></i></span>
               <? if ($filter['operator'] == 'NOT') echo $this->transEsc('NOT') . ' ';
               if ($filter['operator'] == 'OR' && $i > 0) echo $this->transEsc('OR') . ' '; ?><?= $this->transEsc($field) ?>: <?= $this->escapeHtml($filter['displayText']) ?>
             </a>
@@ -66,6 +71,7 @@ $rangeFacets = $this->recommend->getAllRangeFacets(); ?>
   <? foreach ($sideFacetSet as $title => $cluster): ?>
     <? $allowExclude = $this->recommend->excludeAllowed($title); ?>
     <? $facets_before_more = $this->recommend->getShowMoreSetting($title); ?>
+    <? $showMoreInLightbox = $this->recommend->getShowInLightboxSetting($title); ?>
     <ul class="accordion" id="side-panel-<?= $this->escapeHtmlAttr($title) ?>" data-accordion>
       <li class="accordion-navigation <? if (!in_array($title, $collapsedFacets)): ?> active<? endif ?>">
         <a href="#side-collapse-<?= $this->escapeHtmlAttr($title) ?>" class="title"><?= $this->transEsc($cluster['label']) ?></a>
@@ -74,7 +80,7 @@ $rangeFacets = $this->recommend->getAllRangeFacets(); ?>
           <ul class="date-range-slider">
             <li>
               <form name="<?= $this->escapeHtmlAttr($title) ?>Filter" id="<?= $this->escapeHtmlAttr($title) ?>Filter">
-                <?= $results->getUrlQuery()->asHiddenFields(array('page' => "/./", 'filter' => "/^{$title}:.*/")) ?>
+                <?= $results->getUrlQuery()->asHiddenFields(['page' => "/./", 'filter' => "/^{$title}:.*/"]) ?>
                 <input type="hidden" name="<?= $this->escapeHtmlAttr($rangeFacets[$title]['type']) ?>range[]" value="<?= $this->escapeHtmlAttr($title) ?>"/>
                 <div class="row">
                   <? $extraInputAttribs = ($rangeFacets[$title]['type'] == 'date') ? 'maxlength="4" ' : ''; ?>
@@ -129,14 +135,26 @@ $(document).ready(function() {
   .on('slide', fillTexts)
   .data('slider');
 });
+
+$('#{$this->escapeHtmlAttr($title)}from, #{$this->escapeHtmlAttr($title)}to').change(function () {
+  var fromValue = Number($('#{$this->escapeHtmlAttr($title)}from').val());
+  var toValue = Number($('#{$this->escapeHtmlAttr($title)}to').val());
+  $('#{$this->escapeHtmlAttr($title)}dateSlider').slider(
+    'setValue',
+    [
+      isNaN(fromValue) || fromValue <= 0 ? {$min} : fromValue,
+      isNaN(toValue) || toValue <= 0 ? {$max} : toValue
+    ],
+    true
+  );
+});
 JS;
                 ?>
                 <?= $this->inlineScript(\Zend\View\Helper\HeadScript::SCRIPT, $script, 'SET'); ?>
               <? endif; ?>
-              <? else: ?>
+            <? else: ?>
               <? if (in_array($title, $hierarchicalFacets)): ?>
               <? $this->headScript()->appendFile('vendor/jsTree/jstree.min.js'); ?>
-              <? $this->headScript()->appendFile('facets.js'); ?>
               <? $sort = isset($hierarchicalFacetSortOptions[$title]) ? $hierarchicalFacetSortOptions[$title] : ''; ?>
               <? if (!in_array($title, $collapsedFacets)): ?>
                 <?
@@ -178,16 +196,27 @@ JS;
                   <? $moreClass = 'narrowGroupHidden-' . $this->escapeHtmlAttr($title) . ' hide'; ?>
                   <? if ($i == $facets_before_more): ?>
                     <li id="more-narrowGroupHidden-<?= $this->escapeHtmlAttr($title) ?>">
-                      <a href="javascript:moreFacets('narrowGroupHidden-<?=$this->escapeHtmlAttr($title) ?>')"><?= $this->transEsc('more') ?>&nbsp;...</a>
+                      <? $idAndClass = 'id="more-narrowGroupHidden-'.$this->escapeHtmlAttr($title).'" class="narrow-toggle"'; ?>
+                      <? if ($facetLightbox = $options->getFacetListAction()): ?>
+                        <? $moreUrl = $this->url($facetLightbox) . $results->getUrlQuery()->getParams().'&amp;facet='.$title.'&amp;facetop='.$thisFacet['operator'].'&amp;facetexclude='.($allowExclude ? 1 : 0); ?>
+                      <? else: ?>
+                        <? $moreUrl = '#'; ?>
+                      <? endif; ?>
+                      <? if (($showMoreInLightbox && $showMoreInLightbox !== 'more') && $facetLightbox): ?>
+                        <a <?=$idAndClass ?> data-lightbox href="<?=$moreUrl ?>" rel="nofollow"><?=$this->transEsc('more')?> ...</a>
+                        <? break; ?>
+                      <? else: ?>
+                        <a <?=$idAndClass ?> href="<?=$moreUrl ?>" onclick="return moreFacets('narrowGroupHidden-<?=$this->escapeHtmlAttr($title) ?>')" rel="nofollow"><?=$this->transEsc('more')?> ...</a>
+                      <? endif; ?>
                     </li>
                   <? endif; ?>
                   <? if ($thisFacet['isApplied']): ?>
                     <li class="<? if ($i >= $facets_before_more): ?> <?= $moreClass ?> <? endif ?>">
-                      <a class="active <? if ($thisFacet['operator'] == 'OR'): ?> facetOR applied<? endif ?>" href="<?= $this->currentPath() . $results->getUrlQuery()->removeFacet($title, $thisFacet['value'], true, $thisFacet['operator']) ?>" >
+                      <a class="active <? if ($thisFacet['operator'] == 'OR'): ?> facetOR applied<? endif ?>" href="<?= $this->currentPath() . $results->getUrlQuery()->removeFacet($title, $thisFacet['value'], true, $thisFacet['operator']) ?>" title="<?=$this->transEsc('applied_filter') ?>">
                         <? if ($thisFacet['operator'] == 'OR'): ?>
-                          <i class="fa fa-check-square-o"></i>
+                          <i class="fa fa-check-square-o" aria-hidden="true"></i>
                         <? else: ?>
-                          <span class="pull-right"><i class="fa fa-check"></i></span>
+                          <span class="pull-right"><i class="fa fa-check" aria-hidden="true"></i></span>
                         <? endif; ?>
                         <?= $this->escapeHtml($thisFacet['displayText']) ?>
                       </a>
@@ -203,26 +232,33 @@ JS;
                           <span class="label pull-right">
                             <?= $this->localizedNumber($thisFacet['count']) ?>
                             <? if ($allowExclude): ?>
-                              <a href="<?= $this->currentPath() . $results->getUrlQuery()->addFacet($title, $thisFacet['value'], 'NOT') ?>" title="<?= $this->transEsc('exclude_facet') ?>"><i class="fa fa-minus-circle"></i></a>
+                              <a href="<?= $this->currentPath() . $results->getUrlQuery()->addFacet($title, $thisFacet['value'], 'NOT') ?>" title="<?= $this->transEsc('exclude_facet') ?>"><i class="fa fa-minus-circle" aria-hidden="true"></i></a>
                             <? endif; ?>
                           </span>
                     <? if ($allowExclude): ?>
-                    <a href="<?= $addURL ?>">
+                      <a href="<?= $addURL ?>">
+                    <? endif; ?>
                   <? endif; ?>
                     <? if ($thisFacet['operator'] == 'OR'): ?>
-                      <i class="fa fa-square-o"></i>
+                      <i class="fa fa-square-o" aria-hidden="true"></i>
                     <? endif; ?>
                     <?= $this->escapeHtml($thisFacet['displayText']) ?>
                     <? /* No <? if ($allowExclude): ?> here! - CK */ ?>
                     </a>
                     </li>
-                  <? endif; ?>
+                  <? /*endif; */?>
                 <? endforeach; ?>
-                <? if ($i >= $facets_before_more): ?><li class="<?= $moreClass ?>"><a href="javascript:lessFacets('narrowGroupHidden-<?=$this->escapeHtmlAttr($title) ?>')"><?= $this->transEsc('less') ?>&nbsp;...</a></li><? endif; ?>
+                <? if ($showMoreInLightbox === 'more' && $facetLightbox = $options->getFacetListAction()): ?>
+                  <? $moreUrl = $this->url($facetLightbox) . $results->getUrlQuery()->getParams().'&amp;facet='.$title.'&amp;facetop='.$thisFacet['operator'].'&amp;facetexclude='.($allowExclude ? 1 : 0); ?>
+                  <li><a class="narrow-toggle <?=$moreClass ?>" data-lightbox href="<?=$moreUrl ?>" rel="nofollow"><?=$this->transEsc('see all')?> ...</a></li>
+                <? endif; ?>
+                <? if ($i >= $facets_before_more): ?>
+                    <li><a class="narrow-toggle <?=$moreClass ?>" href="#" onclick="return lessFacets('narrowGroupHidden-<?=$this->escapeHtmlAttr($title) ?>')"><?=$this->transEsc('less')?> ...</a></li>
                 <? endif; ?>
               </ul>
               <? if (in_array($title, $hierarchicalFacets)): ?>
             </noscript>
+            <? endif; ?>
             <? endif; ?>
         </div>
       </li>
