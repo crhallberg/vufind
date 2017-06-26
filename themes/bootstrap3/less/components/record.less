@@ -1,11 +1,27 @@
-.record .format::after { content: ", "; }
-.result .record .format::after,
-.record .format:last-child::after { content: ""; }
+.record .media-body h3 { margin-top: 0; }
+.recordcover { max-height: 300px; }
 @media (max-width: 767px) {
   .record .media-left,
   .record .media-right { display: block; }
 }
-.recordcover { max-height: 300px; }
+.result .record .format::after,
+.record .format:last-child::after { content: ""; }
+.record .format::after { content: ", "; }
+
+/* ------ Nav ------ */
+.record-nav.nav { margin-bottom: 1rem; }
+.record-nav > li,
+.btn-bookbag-toggle { width: 100%; }
+.record-nav > li > a { padding: .5rem; }
+.record-nav > li > a,
+.btn-bookbag-toggle { text-align: center; }
+@media(min-width: 768px) {
+  .record-nav > li,
+  .btn-bookbag-toggle { width: auto; }
+  .record-nav > li > a { padding: @nav-link-padding; }
+  .record-nav > li > a,
+  .btn-bookbag-toggle { text-align: left; }
+}
 
 /* ------ Comments ------ */
 .comment-label,
@@ -32,6 +48,14 @@
 }
 
 /* ------ Tags ------ */
+.tagList button {
+  margin-top: 0;
+  padding-top: 0;
+  padding-bottom: 4px;
+  font-size: 95%;
+  vertical-align: initial;
+}
+.tagList button .fa-close { margin-top: 3px; }
 .tagList {
   .tag {
     display: inline-block;
