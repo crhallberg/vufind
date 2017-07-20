@@ -89,8 +89,10 @@ function bindChannelAddMenu(iteration, scope) {
       // Make sure the channel has content
       if ($testEl.find('.channel-record').length === 0) {
         $(e.target).closest('.channel').after(
-          '<h2>' + $testEl.find('h2').html() + '</h2>'
+          '<div class="channel-title no-results">'
+          + '<h2>' + $testEl.find('h2').html() + '</h2>'
           + VuFind.translate('nohit_heading')
+          + '</div>'
         );
       } else {
         $(e.target).closest('.channel').after(data);
