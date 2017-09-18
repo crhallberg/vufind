@@ -2,6 +2,7 @@
 return array(
     'extends' => 'bootstrap3',
     'js' => [
-        'sandal.js'
+        'sticky-header.js',
+        'sandal.js',
     ]
 );
