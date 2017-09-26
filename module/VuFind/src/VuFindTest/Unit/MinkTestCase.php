@@ -154,7 +154,8 @@ abstract class MinkTestCase extends DbTestCase
     {
         $env = getenv('VUFIND_SELENIUM_BROWSER');
         $browser = $env ? $env : 'firefox';
-        return new Selenium2Driver($browser);
+        $headless = ['chrome'=>['switches'=>['headless','window-size=1200x600']]];
+        return new Selenium2Driver($browser, $headless);
     }
 
     /**
