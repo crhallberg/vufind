@@ -9,11 +9,16 @@
   "bugs": {
     "url": "https://vufind.org/jira"
   },
+  "scripts": {
+    "prettier-diff": "git commit -am difftemp && prettier --write themes/**/{js/*.js,less/*/*.less,scss/*/*.scss} && git diff && git reset --hard && git reset HEAD^",
+    "prettier-fix": "prettier --write themes/**/{js/*.js,less/*/*.less,scss/*/*.scss}"
+  },
   "dependencies": {
     "grunt": "^0.4.5",
-    "grunt-sass": "^1.0.0",
     "grunt-contrib-less": "1.3.0",
     "grunt-less-to-sass": "0.0.10",
+    "grunt-prettier": "^0.1.0",
+    "grunt-sass": "^1.0.0",
     "jit-grunt": "^0.9.1"
   },
   "devDependencies": {
