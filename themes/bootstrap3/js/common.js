@@ -13,18 +13,21 @@ var VuFind = (function VuFind() {
 
   // Emit a custom event
   // Recommendation: prefix with vf-
-  var emit = function emit(name, detail) {
-    if (typeof detail === 'undefined') {
+  var emit = function emit(name, ...parameters) {
+    if (parameters.length === 0) {
       document.dispatchEvent(new Event(name));
     } else {
-      var event = document.createEvent('CustomEvent');
-      event.initCustomEvent(name, true, true, detail); // name, canBubble, cancelable, detail
+      var event = document.createEvent("CustomEvent");
+      // CustomEvent: name, canBubble, cancelable, detail
+      event.initCustomEvent(name, true, true, parameters);
       document.dispatchEvent(event);
     }
   };
   // Listen shortcut to put everyone on the same element
   var listen = function listen(name, func) {
-    document.addEventListener(name, func, false);
+    document.addEventListener(name, function listenPass(e) {
+      func(e.detail);
+    }, false);
   };
 
   var register = function register(name, module) {
