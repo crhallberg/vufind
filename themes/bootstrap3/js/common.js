@@ -13,7 +13,8 @@ var VuFind = (function VuFind() {
 
   // Emit a custom event
   // Recommendation: prefix with vf-
-  var emit = function emit(name, ...parameters) {
+  var emit = function emit(name) {
+    var parameters = Array.from(arguments).slice(1); // capture additional arguments
     if (parameters.length === 0) {
       document.dispatchEvent(new Event(name));
     } else {
@@ -26,7 +27,7 @@ var VuFind = (function VuFind() {
   // Listen shortcut to put everyone on the same element
   var listen = function listen(name, func) {
     document.addEventListener(name, function listenPass(e) {
-      func(e.detail);
+      func.apply(e, e.detail);
     }, false);
   };
 
