@@ -12,7 +12,7 @@
     <li><button class="toolbar-btn" type="submit" name="email" value="1" title="<?=$this->transEscAttr('email_selected')?>"><?=$this->icon('email') ?> <?=$this->transEsc('Email') ?></button>
     </li>
     <?php if ((null !== $this->list && $this->list->editAllowed($user)) || null === $this->list && $user): ?>
-      <li><button class="toolbar-btn" id="<?=$this->idPrefix?>delete_list_items_<?=null !== $this->list ? $this->escapeHtmlAttr($this->list->id) : ''?>" type="submit" name="delete" value="1" title="<?=$this->transEscAttr('delete_selected')?>"><?=$this->icon('delete') ?><?=$this->transEsc('Delete') ?></button></li>
+      <li><button class="toolbar-btn" id="<?=$this->idPrefix?>delete_list_items_<?=null !== $this->list ? $this->escapeHtmlAttr($this->list->id) : ''?>" type="submit" name="delete" value="1" title="<?=$this->transEscAttr('delete_selected')?>"><?=$this->icon('delete') ?> <?=$this->transEsc('Delete') ?></button></li>
     <?php endif; ?>
     <?php $exportOptions = $this->export()->getActiveFormats('bulk'); if (count($exportOptions) > 0): ?>
       <li><button class="toolbar-btn" type="submit" name="export" value="1" title="<?=$this->transEscAttr('export_selected')?>"><?=$this->icon('export') ?> <?=$this->transEsc('Export')?></button></li>
