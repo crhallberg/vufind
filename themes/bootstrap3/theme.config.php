@@ -164,7 +164,6 @@ return [
             'format-flashcard' => 'FontAwesome:bolt',
             'format-floppydisk' => 'FontAwesome:save',
             'format-globe' => 'FontAwesome:globe',
-            'format-journal' => 'FontAwesome:book',
             'format-journal' => 'FontAwesome:file-text-o',
             'format-kit' => 'FontAwesome:briefcase',
             'format-manuscript' => 'FontAwesome:file-text-o',
