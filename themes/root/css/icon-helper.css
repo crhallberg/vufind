@@ -27,3 +27,11 @@
     fill: currentColor;
     vertical-align: text-bottom;
 }
+
+.show--closed,
+.collapsed .show--open {
+    display: none;
+}
+.collapsed .show--closed {
+    display: inline;
+}

@@ -78,6 +78,9 @@ return [
                 'prefix' => 'fa fa-',
                 'src' => 'vendor/font-awesome.min.css',
             ],
+            'Collapse' => [
+                'template' => 'collapse',
+            ],
         ],
         'aliases' => [
             /**
@@ -101,6 +104,7 @@ return [
             'check' => 'FontAwesome:check',
             'checked-out' => 'FontAwesome:book',
             'cite' => 'FontAwesome:asterisk',
+            'collapse' => 'Collapse:_', // no icon needed, uses two below
             'collapse-close' => 'FontAwesome:chevron-up',
             'collapse-open' => 'FontAwesome:chevron-down',
             'cover-replacement' => 'FontAwesome:question',
