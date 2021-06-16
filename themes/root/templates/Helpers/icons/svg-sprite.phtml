@@ -1,7 +1,6 @@
 <?php
     $this->headLink()->appendStylesheet('icon-helper.css');
-    $src = $this->src ?? 'remixicon.symbol.svg';
 ?>
 <svg class="icon--svg"<?=$this->attrs ?> aria-hidden="true">
-    <use xlink:href="<?=$this->imageLink($src) ?>#<?=$this->icon ?>"></use>
+    <use xlink:href="<?=$this->imageLink($this->src) ?>#<?=$this->icon ?>"></use>
 </svg>
