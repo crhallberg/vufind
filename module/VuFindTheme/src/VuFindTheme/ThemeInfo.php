@@ -213,8 +213,8 @@ class ThemeInfo
          * with replace but parent values are appended to the end of merged values
          */
         $arrayFunc = !$flatten
-            ? 'array_merge'
-            : 'array_replace';
+            ? 'array_replace'
+            : 'array_merge';
 
         $deepFunc = !$flatten
             ? 'array_merge_recursive'
