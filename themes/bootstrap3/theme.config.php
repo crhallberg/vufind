@@ -114,8 +114,8 @@ return [
             'email' => 'FontAwesome:envelope',
             'export' => 'FontAwesome:external-link',
             'external-link' => 'FontAwesome:external-link',
-            'facet-checked' => 'FontAwesome:times',
-            'facet-exclude' => 'FontAwesome:square-o',
+            'facet-checked' => 'FontAwesome:check-square-o',
+            'facet-exclude' => 'FontAwesome:times',
             'facet-unchecked' => 'FontAwesome:square-o',
             'favorites' => 'FontAwesome:star',
             'feedback' => 'FontAwesome:envelope',
@@ -212,6 +212,6 @@ return [
             'usd' => 'FontAwesome:usd',
             'won' => 'FontAwesome:won',
             'yen' => 'FontAwesome:yen',
-        ]
-    ]
+        ],
+    ],
 ];
