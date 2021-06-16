@@ -28,9 +28,7 @@
   $displayText = '<span class="facet-value">' . $displayText . '</span>';
 
   if ($this->facet['operator'] == 'OR') {
-    $displayText =
-      '<i class="fa ' . ($this->facet['isApplied'] ? 'fa-check-square-o' : 'fa-square-o') . '" aria-hidden="true"></i>'
-      . $displayText;
+    $displayText = $this->icon($this->facet['isApplied'] ? 'facet-checked' : 'facet-unchecked') . $displayText;
   }
 ?>
 <?php if ($hasSubLinks): ?>
