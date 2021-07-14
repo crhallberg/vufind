@@ -81,6 +81,7 @@ return [
             'Collapse' => [
                 'template' => 'collapse',
             ],
+            /* For an example of an images set, see Bootprint's theme.config.php. */
         ],
         'aliases' => [
             /**
