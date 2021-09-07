@@ -185,8 +185,8 @@ class Icon extends AbstractHelper
     /**
      * Returns inline HTML for icon
      *
-     * @param string $name  Which icon?
-     * @param array  $attrs Additional HTML attributes
+     * @param string       $name  Which icon?
+     * @param array|string $attrs Additional HTML attributes
      *
      * @return string
      */
@@ -195,6 +195,11 @@ class Icon extends AbstractHelper
         if (!$this->styleAppended) {
             $this->headLink->appendStylesheet('icon-helper.css');
             $this->styleAppended = true;
+        }
+
+        // Class name shortcut
+        if (is_string($attrs)) {
+            $attrs = ['class' => $attrs];
         }
 
         $cacheKey = $this->cacheKey($name, $attrs);
