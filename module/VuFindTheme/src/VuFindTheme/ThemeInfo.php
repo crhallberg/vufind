@@ -222,9 +222,9 @@ class ThemeInfo
 
         $merged = [];
         while (!empty($currentTheme)) {
-            $currentThemeSet = $arrayFunc(
-                $allThemeInfo[$currentTheme]['mixins'] ?? [],
+            $currentThemeSet = array_merge(
                 (array)$currentTheme,
+                $allThemeInfo[$currentTheme]['mixins'] ?? [],
             );
             foreach ($currentThemeSet as $theme) {
                 if (isset($allThemeInfo[$theme][$key])) {
