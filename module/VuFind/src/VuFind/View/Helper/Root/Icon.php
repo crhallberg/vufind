@@ -27,9 +27,10 @@
  */
 namespace VuFind\View\Helper\Root;
 
+use Laminas\Cache\Storage\StorageInterface;
 use Laminas\View\Helper\AbstractHelper;
 use Laminas\View\Helper\EscapeHtmlAttr;
-use VuFindTheme\ThemeInfo;
+use Laminas\View\Helper\HeadLink;
 
 /**
  * Icon view helper
@@ -57,6 +58,13 @@ class Icon extends AbstractHelper
     protected $defaultSet;
 
     /**
+     * Default icon template
+     *
+     * @var string
+     */
+    protected $defaultTemplate;
+
+    /**
      * Transforming map
      *
      * @var array
@@ -64,22 +72,61 @@ class Icon extends AbstractHelper
     protected $iconMap;
 
     /**
+     * Cache for icons
+     *
+     * @var StorageInterface
+     */
+    protected $cache;
+
+    /**
+     * Escape helper
+     *
+     * @var EscapeHtmlAttr
+     */
+    protected $esc;
+
+    /**
+     * HeadLink helper
+     *
+     * @var HeadLink
+     */
+    protected $headLink;
+
+    /**
+     * Prevent extra work by only appending the stylesheet once
+     *
+     * @var boolean
+     */
+    protected $styleAppended = false;
+
+    /**
      * Constructor
      *
-     * @param ThemeInfo $themeInfo Theme info helper
+     * @param array            $config   Icon configuration
+     * @param StorageInterface $cache    Cache instance
+     * @param EscapeHtmlAttr   $escAttr  EscapeHtmlAttr view helper
+     * @param HeadLink         $headLink HeadLink view helper
      */
-    public function __construct(ThemeInfo $themeInfo)
-    {
-        $this->config = $themeInfo->getMergedConfig('icons', true);
+    public function __construct(
+        array $config,
+        StorageInterface $cache,
+        EscapeHtmlAttr $escAttr,
+        HeadLink $headLink
+    ) {
+        $this->config = $config;
         $this->defaultSet = $this->config['defaultSet'] ?? 'FontAwesome';
+        $this->defaultTemplate = $this->config['defaultTemplate'] ?? 'font';
         $this->iconMap = $this->config['aliases'] ?? [];
+        $this->cache = $cache;
+        $this->esc = $escAttr;
+        $this->headLink = $headLink;
     }
 
     /**
-     * Map icon to set. Add prefix, return with set and template
-     * Broken out for easier customization
+     * Map icon to set. Add prefix, return with set and template.
+     * Broken out for easier customization.
      *
-     * @param string $name Which icon?
+     * @param string $name Icon name or key from theme.config.php
      *
      * @return array
      */
@@ -95,57 +142,86 @@ class Icon extends AbstractHelper
 
         // Find set in theme.config.php
         $setConfig = $this->config['sets'][$set] ?? [];
-        $template = $setConfig['template'] ?? $set;
+        $template = $setConfig['template'] ?? $this->defaultTemplate;
         $prefix = $setConfig['prefix'] ?? '';
 
         return [$prefix . $icon, $set, $template];
     }
 
     /**
-     * Reduce extra parameters to one attribute string
-     * Broken out for easier customization
+     * Reduce extra parameters to one attribute string.
+     * Broken out for easier customization.
      *
-     * @param array          $extra Just extra HTML attributes for now
-     * @param EscapeHtmlAttr $escAttr EscapeHtmlAttr view helper
+     * @param array $attrs Additional HTML attributes for the HTML tag
      *
      * @return string
      */
-    protected function compileAttrs(array $extra, EscapeHtmlAttr $escAttr): string
+    protected function compileAttrs(array $attrs): string
     {
-        $attrs = '';
-        foreach ($extra as $key => $val) {
-            $attrs .= ' ' . $key . '="' . $escAttr($val) . '"';
+        $attrStr = '';
+        foreach ($attrs as $key => $val) {
+            $attrStr .= ' ' . $key . '="' . ($this->esc)($val) . '"';
         }
-        return $attrs;
+        return $attrStr;
+    }
+
+    /**
+     * Create a unique key for icon names and extra attributes
+     *
+     * @param string $name  Icon name or key from theme.config.php
+     * @param array  $attrs Additional HTML attributes for the HTML tag
+     *
+     * @return string
+     */
+    protected function cacheKey(string $name, $attrs = []): string
+    {
+        if (empty($attrs)) {
+            return $name;
+        }
+        ksort($attrs);
+        return $name . '+' . md5(json_encode($attrs));
     }
 
     /**
      * Returns inline HTML for icon
      *
      * @param string $name  Which icon?
-     * @param array  $extra Just extra HTML attributes for now
+     * @param array  $attrs Additional HTML attributes
      *
      * @return string
      */
-    public function __invoke(string $name, $extra = []): string
+    public function __invoke(string $name, $attrs = []): string
     {
-        [$icon, $set, $template] = $this->mapIcon($name);
+        if (!$this->styleAppended) {
+            $this->headLink->appendStylesheet('icon-helper.css');
+            $this->styleAppended = true;
+        }
 
-        // Compile attitional HTML attributes
-        $escAttr = $this->getView()->plugin('escapeHtmlAttr');
-        $attrs = $this->compileAttrs($extra, $escAttr);
+        $cacheKey = $this->cacheKey($name, $attrs);
+        $cached = $this->cache->getItem($cacheKey);
 
-        // Surface set config and add icon and attrs
-        return $this->getView()->render(
-            'Helpers/icons/' . $template,
-            array_merge(
-                $this->config['sets'][$set] ?? [],
-                [
-                    'icon' => $escAttr($icon),
-                    'attrs' => $attrs,
-                    'extra' => $extra
-                ]
-            )
-        );
+        if ($cached == null) {
+            [$icon, $set, $template] = $this->mapIcon($name);
+
+            // Compile additional HTML attributes
+            $attrs = $this->compileAttrs($attrs);
+
+            // Surface set config and add icon and attrs
+            $cached = $this->getView()->render(
+                'Helpers/icons/' . $template,
+                array_merge(
+                    $this->config['sets'][$set] ?? [],
+                    [
+                        'icon' => ($this->esc)($icon),
+                        'attrs' => $attrs,
+                        'extra' => $attrs
+                    ]
+                )
+            );
+
+            $this->cache->setItem($cacheKey, $cached);
+        }
+
+        return $cached;
     }
 }

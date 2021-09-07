@@ -12,7 +12,7 @@
             : 'default';
         ?>
         <?=$this->icon('format-' . $icon, $format ? ['title' => $format] : []) ?>
-        <a href="<?=$this->recordLink()->getUrl($data)?>">
+        <a href="<?=$this->escapeHtmlAttr($this->recordLinker()->getUrl($data))?>">
           <?=$this->escapeHtml($data->getTitle())?>
         </a>
         <?php $authors = $data->getPrimaryAuthors(); if (!empty($authors)): ?>

@@ -60,15 +60,24 @@ class IconFactory implements FactoryInterface
      * creating a service.
      * @throws ContainerException&\Throwable if any other error occurs
      */
-    public function __invoke(ContainerInterface $container, $requestedName,
+    public function __invoke(
+        ContainerInterface $container,
+        $requestedName,
         array $options = null
     ) {
         if (!empty($options)) {
             throw new \Exception('Unexpected options sent to factory.');
         }
-
+        $config = $container->get(\VuFindTheme\ThemeInfo::class)
+            ->getMergedConfig('icons', true);
+        $cache = $container->get(\Laminas\Cache\Service\StorageAdapterFactory::class)
+            ->createFromArrayConfiguration(['name' => 'memory', 'options' => []]);
+        $helpers = $container->get('ViewHelperManager');
         return new $requestedName(
-            $container->get(\VuFindTheme\ThemeInfo::class)
+            $config,
+            $cache,
+            $helpers->get('escapeHtmlAttr'),
+            $helpers->get('headLink')
         );
     }
 }

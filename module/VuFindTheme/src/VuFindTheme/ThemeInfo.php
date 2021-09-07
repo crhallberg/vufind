@@ -208,13 +208,13 @@ class ThemeInfo
          * Using array_merge (default) will merge them into ['b', 'a']
          * Using array_replace ($flatten = true) will merge them into 'b'
          *
-         * We're using an anonymous funcyion here to swap the arguements in the
+         * We're using an anonymous function here to swap the arguments in the
          * flatten case. This is to make sure child values override parent values
          * with replace but parent values are appended to the end of merged values
          */
         $arrayFunc = !$flatten
-            ? 'array_replace'
-            : 'array_merge';
+            ? 'array_merge'
+            : 'array_replace';
 
         $deepFunc = !$flatten
             ? 'array_merge_recursive'

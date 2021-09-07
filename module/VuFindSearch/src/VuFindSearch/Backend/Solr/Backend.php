@@ -124,7 +124,33 @@ class Backend extends AbstractBackend
      *
      * @return RecordCollectionInterface
      */
-    public function search(AbstractQuery $query, $offset, $limit,
+    public function search(
+        AbstractQuery $query,
+        $offset,
+        $limit,
+        ParamBag $params = null
+    ) {
+        $json = $this->rawJsonSearch($query, $offset, $limit, $params);
+        $collection = $this->createRecordCollection($json);
+        $this->injectSourceIdentifier($collection);
+
+        return $collection;
+    }
+
+    /**
+     * Perform a search and return a raw response.
+     *
+     * @param AbstractQuery $query  Search query
+     * @param int           $offset Search offset
+     * @param int           $limit  Search limit
+     * @param ParamBag      $params Search backend parameters
+     *
+     * @return string
+     */
+    public function rawJsonSearch(
+        AbstractQuery $query,
+        $offset,
+        $limit,
         ParamBag $params = null
     ) {
         $params = $params ?: new ParamBag();
@@ -133,11 +159,7 @@ class Backend extends AbstractBackend
         $params->set('rows', $limit);
         $params->set('start', $offset);
         $params->mergeWith($this->getQueryBuilder()->build($query));
-        $response   = $this->connector->search($params);
-        $collection = $this->createRecordCollection($response);
-        $this->injectSourceIdentifier($collection);
-
-        return $collection;
+        return $this->connector->search($params);
     }
 
     /**
@@ -150,7 +172,10 @@ class Backend extends AbstractBackend
      *
      * @return RecordCollectionInterface
      */
-    public function getIds(AbstractQuery $query, $offset, $limit,
+    public function getIds(
+        AbstractQuery $query,
+        $offset,
+        $limit,
         ParamBag $params = null
     ) {
         $params = $params ?: new ParamBag();
@@ -177,7 +202,9 @@ class Backend extends AbstractBackend
      * @return RecordCollectionInterface
      */
     public function random(
-        AbstractQuery $query, $limit, ParamBag $params = null
+        AbstractQuery $query,
+        $limit,
+        ParamBag $params = null
     ) {
         $params = $params ?: new ParamBag();
         $this->injectResponseWriter($params);
@@ -279,7 +306,10 @@ class Backend extends AbstractBackend
      *
      * @return Terms
      */
-    public function terms($field = null, $start = null, $limit = null,
+    public function terms(
+        $field = null,
+        $start = null,
+        $limit = null,
         ParamBag $params = null
     ) {
         // Support alternate syntax with ParamBag as first parameter:
@@ -327,14 +357,18 @@ class Backend extends AbstractBackend
      * @param int      $page        Result page to return (starts at 0)
      * @param int      $limit       Number of results to return on each page
      * @param ParamBag $params      Additional parameters
-     * POST)
      * @param int      $offsetDelta Delta to use when calculating page
      * offset (useful for showing a few results above the highlighted row)
      *
      * @return array
      */
-    public function alphabeticBrowse($source, $from, $page, $limit = 20,
-        $params = null, $offsetDelta = 0
+    public function alphabeticBrowse(
+        $source,
+        $from,
+        $page,
+        $limit = 20,
+        $params = null,
+        $offsetDelta = 0
     ) {
         $params = $params ?: new ParamBag();
         $this->injectResponseWriter($params);
@@ -523,7 +557,9 @@ class Backend extends AbstractBackend
                 "Alphabetic Browse index missing.  See " .
                 "https://vufind.org/wiki/indexing:alphabetical_heading_browse for " .
                 "details on generating the index.",
-                $e->getCode(), $e->getResponse(), $e->getPrevious()
+                $e->getCode(),
+                $e->getResponse(),
+                $e->getPrevious()
             );
         }
         throw $e;
