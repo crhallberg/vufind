@@ -9,6 +9,8 @@ var VuFind = (function VuFind() {
   var path = null;
   var _initialized = false;
   var _submodules = [];
+
+  var _icons = {};
   var _translations = {};
 
   // Emit a custom event
@@ -72,7 +74,7 @@ var VuFind = (function VuFind() {
     }
   };
   var translate = function translate(op, _replacements) {
-    var replacements = _replacements || [];
+    var replacements = _replacements || {};
     var translation = _translations[op] || op;
     if (replacements) {
       for (var key in replacements) {
@@ -83,6 +85,39 @@ var VuFind = (function VuFind() {
     }
     return translation;
   };
+
+  var addIcons = function addIcons(s) {
+    for (var i in s) {
+      if (Object.prototype.hasOwnProperty.call(s, i)) {
+        _icons[i] = s[i];
+      }
+    }
+  };
+  var icon = function icon(icon, className = "") {
+    if (typeof _icons[icon] == "undefined") {
+      console.error("JS icon missing: " + icon);
+      return icon;
+    }
+
+    var html = _icons[icon];
+
+    // Add additional className
+    if (
+      className &&
+      html.indexOf(className) === -1 // don't duplicate
+    ) {
+      return html.replace(
+        /class="([^"]+)"/,
+        'class="$1 ' + className + '"'
+      );
+    }
+
+    return html;
+  };
+  // Shortcut method
+  var spinner = function spinner() {
+    return icon('spinner', 'icon--spin');
+  }
 
   /**
    * Reload the page without causing trouble with POST parameters while keeping hash
@@ -105,12 +140,15 @@ var VuFind = (function VuFind() {
     defaultSearchBackend: defaultSearchBackend,
     path: path,
 
+    addIcons: addIcons,
     addTranslations: addTranslations,
     init: init,
     emit: emit,
+    icon: icon,
     listen: listen,
     refreshPage: refreshPage,
     register: register,
+    spinner: spinner,
     translate: translate
   };
 })();
