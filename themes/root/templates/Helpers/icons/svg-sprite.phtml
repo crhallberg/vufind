@@ -1,6 +1,3 @@
-<?php
-    $this->headLink()->appendStylesheet('icon-helper.css');
-?>
 <svg class="icon--svg"<?=$this->attrs ?> aria-hidden="true">
-    <use xlink:href="<?=$this->imageLink($src) ?>#<?=$this->escapeHtmlAttr($this->icon) ?>"></use>
+    <use xlink:href="<?=$this->imageLink($src) ?>#<?=$this->icon ?>"></use>
 </svg>

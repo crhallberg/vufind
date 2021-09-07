@@ -143,7 +143,7 @@ class IconTest extends \PHPUnit\Framework\TestCase
     public function testFontIcon(): void
     {
         $helper = $this->getIconHelper();
-        $expected = '<span class="icon--font fa&amp;&#x23;x20&#x3B;fa-foo" '
+        $expected = '<span class="icon--font fa&#x20;fa-foo" '
             . 'role="img" aria-hidden="true"></span>';
         $this->assertEquals($expected, trim($helper('foo')));
     }
@@ -156,7 +156,7 @@ class IconTest extends \PHPUnit\Framework\TestCase
     public function testFontIconWithExtras(): void
     {
         $helper = $this->getIconHelper();
-        $expected = '<span class="icon--font fa&amp;&#x23;x20&#x3B;fa-foo" '
+        $expected = '<span class="icon--font fa&#x20;fa-foo" '
             . 'bar="baz" role="img" aria-hidden="true"></span>';
         $this->assertEquals($expected, trim($helper('foo', ['bar' => 'baz'])));
     }
@@ -168,7 +168,7 @@ class IconTest extends \PHPUnit\Framework\TestCase
      */
     public function testCaching(): void
     {
-        $expected = '<span class="icon--font fa&amp;&#x23;x20&#x3B;fa-foo" '
+        $expected = '<span class="icon--font fa&#x20;fa-foo" '
             . 'bar="baz" role="img" aria-hidden="true"></span>' . "\n";
         $key = 'foo+c0dc783820069fb9337be7366f7945bf';
 
