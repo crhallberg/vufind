@@ -1,4 +1,11 @@
 <?php
+/**
+ * Font Awesome icon set by FortAwesome
+ *
+ * Website: https://fontawesome.com/
+ * Repository: https://github.com/FortAwesome/Font-Awesome
+ * Licenses: SIL OFL 1.1 License (Fonts), CC BY 4.0 License (Icons), MIT License (Code)
+ */
 return [
     'css' => [
         // 'v4-shims.min.css', // activate to add v4 class compatibility
