@@ -22,8 +22,9 @@
 .icon--svg {
     width: 1.1em;
     height: 1.1em;
+    margin-top: 0.25em;
     fill: currentColor;
-    vertical-align: sub;
+    vertical-align: top;
 }
 
 .show--closed,
