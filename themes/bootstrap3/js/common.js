@@ -93,7 +93,7 @@ var VuFind = (function VuFind() {
       }
     }
   };
-  var icon = function icon(icon, className = "") {
+  var icon = function icon(icon, attrs = {}) {
     if (typeof _icons[icon] == "undefined") {
       console.error("JS icon missing: " + icon);
       return icon;
@@ -101,15 +101,33 @@ var VuFind = (function VuFind() {
 
     var html = _icons[icon];
 
-    // Add additional className
-    if (
-      className &&
-      html.indexOf(className) === -1 // don't duplicate
-    ) {
-      return html.replace(
-        /class="([^"]+)"/,
-        'class="$1 ' + className + '"'
-      );
+    // Add additional attributes
+    function addAttrs(html, attrs = {}) {
+      var mod = String(html);
+      for (var attr in attrs) {
+          var sliceStart = html.indexOf(" ");
+          var sliceEnd = sliceStart;
+          var value = attrs[attr];
+          var regex = new RegExp(` ${attr}=(['"])([^\\1]+?)\\1`);
+          var existing = html.match(regex);
+          if (existing) {
+            sliceStart = existing.index;
+            sliceEnd = sliceStart + existing[0].length;
+            value = existing[2] + " " + value;
+          }
+          mod = mod.slice(0, sliceStart) +
+            " " + attr + '="' + value + '"' +
+            mod.slice(sliceEnd);
+      }
+      return mod;
+    }
+
+    if (typeof attrs == "string") {
+      return addAttrs(html, { class: attrs });
+    }
+
+    if (Object.keys(attrs).length > 0) {
+      return addAttrs(html, attrs);
     }
 
     return html;
