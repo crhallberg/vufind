@@ -8,18 +8,18 @@
  */
 return [
     'css' => [
-        // 'v4-shims.min.css', // activate to add v4 class compatibility
-        // 'svg-with-js.min.css', // activate to replace all icons with SVG
+        // 'vendor/v4-shims.min.css', // activate to add v4 class compatibility
+        // 'vendor/svg-with-js.min.css', // activate to replace all icons with SVG
     ],
     'js' => [
-        // 'all.min.js', // activate to replace all icons with SVG
-        // 'v4-shims.min.js', // activate to convert v4 classes to SVG as well
+        // 'vendor/all.min.js', // activate to replace all icons with SVG
+        // 'vendor/v4-shims.min.js', // activate to convert v4 classes to SVG as well
     ],
     'icons' => [
         'sets' => [
             'FontAwesome5' => [
                 'template' => 'font',
-                'src' => 'all.min.css', // edited to move webfonts folder inside css/
+                'src' => 'vendor/all.min.css', // edited to move webfonts folder inside css/
             ],
         ],
         'aliases' => [
