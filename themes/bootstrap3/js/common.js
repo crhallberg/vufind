@@ -170,6 +170,7 @@ var VuFind = (function VuFind() {
     listen: listen,
     refreshPage: refreshPage,
     register: register,
+    spinIcon: spinIcon,
     spinner: spinner,
     translate: translate
   };
