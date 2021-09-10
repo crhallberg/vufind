@@ -223,11 +223,11 @@ $(document).ready(function registerAccountAjax() {
   });
 
   function statusIcon(icon, className, title) {
-     return VuFind.icon(icon, {
-        class: className,
-        "data-toggle": "tooltip",
-        "title": VuFind.translate(title),
-      });
+    return VuFind.icon(icon, {
+      class: className,
+      "data-toggle": "tooltip",
+      "title": VuFind.translate(title),
+    });
   }
 
   VuFind.account.register("holds", {
