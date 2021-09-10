@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Get autocomplete results from the EDS backend
+ * Command to write a document object to Solr.
  *
  * PHP version 7
  *
@@ -26,14 +26,14 @@
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org
  */
-namespace VuFindSearch\Backend\EDS\Command;
+namespace VuFindSearch\Backend\Solr\Command;
 
-use VuFindSearch\Backend\EDS\Backend;
-use VuFindSearch\Command\CallMethodCommand;
+use VuFindSearch\Backend\Solr\Backend;
+use VuFindSearch\Backend\Solr\Document\DocumentInterface;
 use VuFindSearch\ParamBag;
 
 /**
- * Get autocomplete results from the EDS backend
+ * Command to write a document object to Solr.
  *
  * @category VuFind
  * @package  Search
@@ -41,42 +41,52 @@ use VuFindSearch\ParamBag;
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org
  */
-class AutocompleteCommand extends CallMethodCommand
+class WriteDocumentCommand extends \VuFindSearch\Command\CallMethodCommand
 {
     /**
-     * Simple query string.
+     * Document to write.
      *
-     * @var string
+     * @var DocumentInterface
      */
-    protected $query;
+    protected $doc;
 
     /**
-     * Autocomplete type.
+     * Timeout value.
+     *
+     * @var ?int
+     */
+    protected $timeout;
+
+    /**
+     * Handler to use.
      *
      * @var string
      */
-    protected $domain;
+    protected $handler;
 
     /**
      * Constructor.
      *
-     * @param string    $backendId Search backend identifier
-     * @param string    $query     Simple query string
-     * @param string    $domain    Autocomplete type, e.g. 'rawqueries' or 'holdings'
-     * @param ?ParamBag $params    Search backend parameters
+     * @param string            $backendId Search backend identifier
+     * @param DocumentInterface $doc       Document to write
+     * @param ?int              $timeout   Timeout value (null for default)
+     * @param string            $handler   Handler to use
+     * @param ?ParamBag         $params    Search backend parameters
      */
     public function __construct(
         string $backendId,
-        string $query,
-        string $domain,
-        ParamBag $params = null
+        DocumentInterface $doc,
+        int $timeout = null,
+        string $handler = 'update',
+        ?ParamBag $params = null
     ) {
-        $this->query = $query;
-        $this->domain = $domain;
+        $this->doc = $doc;
+        $this->timeout = $timeout;
+        $this->handler = $handler;
         parent::__construct(
             $backendId,
             Backend::class,
-            'autocomplete',
+            'writeDocument',
             $params
         );
     }
@@ -89,28 +99,40 @@ class AutocompleteCommand extends CallMethodCommand
     public function getArguments(): array
     {
         return [
-            $this->getQuery(),
-            $this->getDomain()
+            $this->getDocument(),
+            $this->getTimeout(),
+            $this->getHandler(),
+            $this->getSearchParameters()
         ];
     }
 
     /**
-     * Return simple query string.
+     * Return document to write.
      *
-     * @return string
+     * @return DocumentInterface
      */
-    public function getQuery(): string
+    public function getDocument(): DocumentInterface
     {
-        return $this->query;
+        return $this->doc;
     }
 
     /**
-     * Return autocomplete type.
+     * Return timeout value.
+     *
+     * @return int|null
+     */
+    public function getTimeout(): ?int
+    {
+        return $this->timeout;
+    }
+
+    /**
+     * Return handler to use.
      *
      * @return string
      */
-    public function getDomain(): string
+    public function getHandler(): string
     {
-        return $this->domain;
+        return $this->handler;
     }
 }
