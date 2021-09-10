@@ -81,6 +81,7 @@ function addGroup(_firstTerm, _firstField, _join) {
   var join = _join || '';
 
   var $newGroup = $($('#new_group_template').html());
+  console.log($('#new_group_template').html());
   $newGroup.find('.adv-group-label') // update label
     .attr('for', 'search_lookfor' + nextGroup + '_0');
   $newGroup.attr('id', 'group' + nextGroup);
