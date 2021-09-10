@@ -93,6 +93,13 @@ class Icon extends AbstractHelper
     protected $headLink;
 
     /**
+     * Are we in right to left text mode?
+     *
+     * @var boolean
+     */
+    protected $rtl;
+
+    /**
      * Prevent extra work by only appending the stylesheet once
      *
      * @var boolean
@@ -111,7 +118,8 @@ class Icon extends AbstractHelper
         array $config,
         StorageInterface $cache,
         EscapeHtmlAttr $escAttr,
-        HeadLink $headLink
+        HeadLink $headLink,
+        bool $rtl
     ) {
         $this->config = $config;
         $this->defaultSet = $this->config['defaultSet'] ?? 'FontAwesome';
@@ -120,6 +128,7 @@ class Icon extends AbstractHelper
         $this->cache = $cache;
         $this->esc = $escAttr;
         $this->headLink = $headLink;
+        $this->rtl = $rtl;
     }
 
     /**
@@ -132,7 +141,8 @@ class Icon extends AbstractHelper
      */
     protected function mapIcon(string $name): array
     {
-        $icon = $this->iconMap[$name] ?? $name;
+        $rtl = $this->rtl ? '-rtl' : '';
+        $icon = $this->iconMap[$name . $rtl] ?? $this->iconMap[$name] ?? $name;
         $set = $this->defaultSet;
 
         // Override set from config (ie. FontAwesome:icon)

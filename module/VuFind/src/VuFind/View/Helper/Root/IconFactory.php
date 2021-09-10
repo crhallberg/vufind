@@ -77,7 +77,8 @@ class IconFactory implements FactoryInterface
             $config,
             $cache,
             $helpers->get('escapeHtmlAttr'),
-            $helpers->get('headLink')
+            $helpers->get('headLink'),
+            $helpers->get('layout')->rtl
         );
     }
 }
