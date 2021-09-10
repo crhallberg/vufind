@@ -119,7 +119,7 @@ class Icon extends AbstractHelper
         StorageInterface $cache,
         EscapeHtmlAttr $escAttr,
         HeadLink $headLink,
-        bool $rtl
+        bool $rtl = false
     ) {
         $this->config = $config;
         $this->defaultSet = $this->config['defaultSet'] ?? 'FontAwesome';

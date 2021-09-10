@@ -1,6 +1,6 @@
 <?php
 /**
- * JsIcons helper for passing icon HTML to Javascript
+ * JsStringConveyor helper for passing transformed text to Javascript
  *
  * PHP version 7
  *
@@ -27,37 +27,64 @@
  */
 namespace VuFind\View\Helper\Root;
 
+use Laminas\View\Helper\AbstractHelper;
+
 /**
- * JsIcons helper for passing icon HTML to Javascript
+ * JsStringConveyor helper for passing transformed text to Javascript
  *
  * @category VuFind
  * @package  View_Helpers
- * @author   Chris Hallberg <challber@villanova.edu>
  * @author   Demian Katz <demian.katz@villanova.edu>
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/development Wiki
  */
-class JsIcons extends JsStringConveyor
+class JsStringConveyor extends AbstractHelper
 {
     /**
-     * Icon helper
+     * Variable name to store translations
      *
-     * @var Icon
+     * @var string
      */
-    protected $iconHelper;
+    protected $varName;
+
+    /**
+     * Strings to translate (key = js key, value = string to translate)
+     *
+     * @var array
+     */
+    protected $strings = [];
 
     /**
      * Constructor
      *
-     * @param Icon   $iconHelper Icon helper
-     * @param string $varName    Variable name to store icons
+     * @param string    $varName   Variable name to store translations
      */
-    public function __construct(
-        Icon $iconHelper,
-        $varName = 'vufindIconString'
-    ) {
-        parent::__construct($varName);
-        $this->iconHelper = $iconHelper;
+    public function __construct($varName = 'vufindString') {
+        $this->varName = $varName;
+    }
+
+    /**
+     * Add strings to the internal array.
+     *
+     * @param array $new Strings to add
+     *
+     * @return void
+     */
+    public function addStrings($new)
+    {
+        foreach ($new as $k => $v) {
+            $this->strings[$k] = $v;
+        }
+    }
+
+    /**
+     * Generate JSON from the internal strings
+     *
+     * @return string
+     */
+    public function getJSON()
+    {
+        return $this->getJSONFromArray($this->strings);
     }
 
     /**
@@ -70,9 +97,16 @@ class JsIcons extends JsStringConveyor
      */
     public function getJSONFromArray(array $strings): string
     {
-        foreach ($strings as $key => &$icon) {
-            $icon = ($this->iconHelper)($icon);
-        }
         return json_encode($strings);
+    }
+
+    /**
+     * Assign JSON to a variable.
+     *
+     * @return string
+     */
+    public function getScript()
+    {
+        return $this->varName . ' = ' . $this->getJSON() . ';';
     }
 }
