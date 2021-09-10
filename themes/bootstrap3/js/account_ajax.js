@@ -66,7 +66,7 @@ VuFind.register('account', function Account() {
         } else {
           $element.removeClass('hidden');
           if (status === LOADING) {
-            $element.html(VuFind.spinner());
+            $element.html(VuFind.spinIcon());
           } else {
             var moduleStatus = _submodules[sub].render($element, _statuses[sub], ICON_LEVELS);
             if (moduleStatus > accountStatus) {
@@ -76,7 +76,7 @@ VuFind.register('account', function Account() {
         }
       }
     }
-    $("#account-icon").html(..._accountIcons[accountStatus]);
+    $("#account-icon").html(VuFind.icon(..._accountIcons[accountStatus]));
     if (accountStatus > ICON_LEVELS.NONE) {
       $("#account-icon")
         .attr("data-toggle", "tooltip")
