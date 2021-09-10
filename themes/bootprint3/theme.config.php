@@ -20,34 +20,34 @@ return [
         'aliases' => [
             // UI
             'arrow-right' => 'Fugue:arrow_right.png',
-            // 'barcode' => 'FontAwesome:barcode',
+            // 'barcode' => inherited from FontAwesome
             'bookmark' => 'Fugue:bookmark_add.png',
             'cancel' => 'Fugue:cancel.png',
             'cart' => 'Fugue:bookbag.png',
             'cart-add' => 'Fugue:bookbag_add.png',
             'cart-empty' => 'Fugue:bookbag_empty.png',
             'cart-remove' => 'Fugue:bookbag_delete.png',
-            // 'check' => 'FontAwesome:check',
+            // 'check' => inherited from FontAwesome
             'checked-out' => 'Fugue:book.png',
             'cite' => 'Fugue:asterisk_orange.png',
             'collapse-close' => 'Fugue:bullet_arrow_up.png',
             'collapse-open' => 'Fugue:bullet_arrow_down.png',
             'cover-replacement' => 'Fugue:images.png',
             'delete' => 'Fugue:bin.png',
-            // 'dropdown-caret' => 'FontAwesome:caret-down',
+            // 'dropdown-caret' => inherited from FontAwesome
             'edit' => 'Fugue:edit.png',
             'email' => 'Fugue:email.png',
             'export' => 'Fugue:link_go.png',
             'external-link' => 'Fugue:link_go.png',
-            // 'facet-checked' => 'FontAwesome:times',
-            // 'facet-exclude' => 'FontAwesome:square-o',
-            // 'facet-unchecked' => 'FontAwesome:square-o',
+            // 'facet-checked' => inherited from FontAwesome
+            // 'facet-exclude' => inherited from FontAwesome
+            // 'facet-unchecked' => inherited from FontAwesome
             'favorites' => 'Fugue:star.png',
             'feedback' => 'Fugue:email.png',
             'hold' => 'Fugue:flag_blue.png',
             'ill-request' => 'Fugue:arrow_switch.png',
             'loan-history' => 'Fugue:clock.png',
-            // 'menu-bars' => 'FontAwesome:bars',
+            // 'menu-bars' => inherited from FontAwesome
             'more' => 'Fugue:arrow_right.png',
             'my-account' => 'Fugue:user.png',
             'options' => 'Fugue:cog.png',
@@ -68,7 +68,7 @@ return [
             'sign-in' => 'Fugue:door_in.png',
             'sign-out' => 'Fugue:door_out.png',
             'sms' => 'Fugue:phone.png',
-            // 'spinner' => 'FontAwesome:spinner fa-spin',
+            // 'spinner' => inherited from FontAwesome
             'storage-retrieval' => 'Fugue:lorry.png',
             'tree-context' => 'Fugue:treeCurrent.png',
             'ui-add' => 'Fugue:add.png',
@@ -128,14 +128,14 @@ return [
             // Currencies
             'eur' => 'Fugue:money_euro.png',
             'gbp' => 'Fugue:money_pound.png',
-            // 'inr' => 'FontAwesome:inr',
+            // 'inr' => inherited from FontAwesome
             'jpy' => 'Fugue:money_yen.png',
-            // 'krw' => 'FontAwesome:krw',
-            // 'rmb' => 'FontAwesome:rmb',
-            // 'rub' => 'FontAwesome:rub',
-            // 'try' => 'FontAwesome:try',
+            // 'krw' => inherited from FontAwesome
+            // 'rmb' => inherited from FontAwesome
+            // 'rub' => inherited from FontAwesome
+            // 'try' => inherited from FontAwesome
             'usd' => 'Fugue:money_dollar.png',
-            // 'won' => 'FontAwesome:won',
+            // 'won' => inherited from FontAwesome
             'yen' => 'Fugue:money_yen.png',
         ]
     ]
