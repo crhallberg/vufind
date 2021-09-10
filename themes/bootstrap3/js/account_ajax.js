@@ -15,10 +15,10 @@ VuFind.register('account', function Account() {
     "DANGER": 3
   };
   var _accountIcons = {};
-  _accountIcons[ICON_LEVELS.NONE] = "fa fa-user-circle";
-  _accountIcons[ICON_LEVELS.GOOD] = "fa fa-bell text-success";
-  _accountIcons[ICON_LEVELS.WARNING] = "fa fa-bell text-warning";
-  _accountIcons[ICON_LEVELS.DANGER] = "fa fa-exclamation-triangle text-danger";
+  _accountIcons[ICON_LEVELS.NONE] = ["my-account", ""];
+  _accountIcons[ICON_LEVELS.GOOD] = ["notification", "text-success"];
+  _accountIcons[ICON_LEVELS.WARNING] = ["notification", "text-warning"];
+  _accountIcons[ICON_LEVELS.DANGER] = ["warning", "text-danger"];
 
   var _submodules = [];
 
@@ -66,7 +66,7 @@ VuFind.register('account', function Account() {
         } else {
           $element.removeClass('hidden');
           if (status === LOADING) {
-            $element.html('<i class="fa fa-spin fa-spinner"></i>');
+            $element.html(VuFind.spinner());
           } else {
             var moduleStatus = _submodules[sub].render($element, _statuses[sub], ICON_LEVELS);
             if (moduleStatus > accountStatus) {
@@ -76,7 +76,7 @@ VuFind.register('account', function Account() {
         }
       }
     }
-    $("#account-icon").attr("class", _accountIcons[accountStatus]);
+    $("#account-icon").html(..._accountIcons[accountStatus]);
     if (accountStatus > ICON_LEVELS.NONE) {
       $("#account-icon")
         .attr("data-toggle", "tooltip")
@@ -222,16 +222,28 @@ $(document).ready(function registerAccountAjax() {
     }
   });
 
+  function statusIcon(icon, className, title) {
+     return VuFind.icon(icon, {
+        class: className,
+        "data-toggle": "tooltip",
+        "title": VuFind.translate(title),
+      });
+  }
+
   VuFind.account.register("holds", {
     selector: ".holds-status",
     ajaxMethod: "getUserHolds",
     render: function render($element, status, ICON_LEVELS) {
       var level = ICON_LEVELS.NONE;
       if (status.available > 0) {
-        $element.html('<i class="fa fa-bell text-success" data-toggle="tooltip" title="' + VuFind.translate('account_requests_available') + '"></i>');
+        $element.html(
+          statusIcon("notification", "text-success", "account_requests_available")
+        );
         level = ICON_LEVELS.GOOD;
       } else if (status.in_transit > 0) {
-        $element.html('<i class="fa fa-clock-o text-warning" data-toggle="tooltip" title="' + VuFind.translate('account_requests_in_transit') + '"></i>');
+        $element.html(
+          statusIcon("warning", "text-warning", "account_requests_in_transit")
+        );
       } else {
         $element.addClass("holds-status hidden");
       }
@@ -249,10 +261,14 @@ $(document).ready(function registerAccountAjax() {
     render: function render($element, status, ICON_LEVELS) {
       var level = ICON_LEVELS.NONE;
       if (status.available > 0) {
-        $element.html('<i class="fa fa-bell text-success" data-toggle="tooltip" title="' + VuFind.translate('account_requests_available') + '"></i>');
+        $element.html(
+          statusIcon("notification", "text-success", "account_requests_available")
+        );
         level = ICON_LEVELS.GOOD;
       } else if (status.in_transit > 0) {
-        $element.html('<i class="fa fa-clock-o text-warning" data-toggle="tooltip" title="' + VuFind.translate('account_requests_in_transit') + '"></i>');
+        $element.html(
+          statusIcon("warning", "text-warning", "account_requests_in_transit")
+        );
       } else {
         $element.addClass("holds-status hidden");
       }
@@ -270,10 +286,14 @@ $(document).ready(function registerAccountAjax() {
     render: function render($element, status, ICON_LEVELS) {
       var level = ICON_LEVELS.NONE;
       if (status.available > 0) {
-        $element.html('<i class="fa fa-bell text-success" data-toggle="tooltip" title="' + VuFind.translate('account_requests_available') + '"></i>');
+        $element.html(
+          statusIcon("notification", "text-success", "account_requests_available")
+        );
         level = ICON_LEVELS.GOOD;
       } else if (status.in_transit > 0) {
-        $element.html('<i class="fa fa-clock-o text-warning" data-toggle="tooltip" title="' + VuFind.translate('account_requests_in_transit') + '"></i>');
+        $element.html(
+          statusIcon("warning", "text-warning", "account_requests_in_transit")
+        );
       } else {
         $element.addClass("holds-status hidden");
       }
@@ -284,5 +304,4 @@ $(document).ready(function registerAccountAjax() {
       return status.available !== currentStatus.available || status.in_transit !== currentStatus.in_transit;
     }
   });
-
 });
