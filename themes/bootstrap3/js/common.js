@@ -136,7 +136,7 @@ var VuFind = (function VuFind() {
   };
   // Icon shortcut methods
   var spinIcon = function spinIcon() {
-    return icon('spinner', 'icon--spin');
+    return icon('spinner', 'loading-spinner icon--spin');
   };
   // Shortcut method
   var spinner = function spinner(extraClass = "") {
