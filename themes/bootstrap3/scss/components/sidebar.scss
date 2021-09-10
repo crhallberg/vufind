@@ -5,15 +5,7 @@
 
   [data-toggle="collapse"] {
     cursor: pointer;
-
-    &::after {
-      content: '\25B2';
-      float: right;
-
-      body.rtl & { float: left; }
-    }
   }
-  .collapsed::after {content: '\25BC';}
 
   .collapse,
   .collapsing,

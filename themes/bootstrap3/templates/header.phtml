@@ -30,7 +30,9 @@
           <?php if (is_object($account) && $account->loginEnabled()): // hide login/logout if unavailable ?>
             <li class="logoutOptions<?php if($account->dropdownEnabled()): ?> with-dropdown<?php endif ?><?php if(!$account->isLoggedIn()): ?> hidden<?php endif ?>">
               <a href="<?=$this->url('myresearch-home', [], ['query' => ['redirect' => 0]])?>">
-                <?=$this->icon('my-account') ?>
+                <span id="account-icon">
+                  <?=$this->icon('my-account') ?>
+                </span>
                 <?=$this->transEsc("Your Account")?>
               </a>
             </li>

@@ -132,6 +132,10 @@ var VuFind = (function VuFind() {
 
     return html;
   };
+  // Icon shortcut methods
+  var spinIcon = function spinIcon() {
+    return icon('spinner', 'icon--spin');
+  }
   // Shortcut method
   var spinner = function spinner(extraClass = "") {
     return '<span class="loading-spinner ' + extraClass + '">' + icon('spinner', 'icon--spin') + ' ' + translate('loading') + '...</span>';
@@ -166,6 +170,7 @@ var VuFind = (function VuFind() {
     listen: listen,
     refreshPage: refreshPage,
     register: register,
+    spinIcon: spinIcon,
     spinner: spinner,
     translate: translate
   };
