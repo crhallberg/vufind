@@ -97,7 +97,6 @@ return [
              * for a strong inheritance safety net but this is not required.
              */
             // UI
-            'arrow-right' => 'FontAwesome:arrow-right',
             'barcode' => 'FontAwesome:barcode',
             'bookmark' => 'FontAwesome:bookmark-o',
             'cancel' => 'FontAwesome:ban',
