@@ -212,10 +212,6 @@ class ThemeInfo
          * flatten case. This is to make sure child values override parent values
          * with replace but parent values are appended to the end of merged values
          */
-        $arrayFunc = !$flatten
-            ? 'array_merge'
-            : 'array_replace';
-
         $deepFunc = !$flatten
             ? 'array_merge_recursive'
             : 'array_replace_recursive';
