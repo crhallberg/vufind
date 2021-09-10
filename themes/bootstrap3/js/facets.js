@@ -26,7 +26,7 @@ function buildFacetNodes(data, currentPath, allowExclude, excludeTitle, counts)
         item.append(VuFind.icon("facet-checked"));
       }
     } else if (facet.isApplied) {
-      item.append(VuFind.icon("facet-checked", "pull-right"));
+      item.append(VuFind.icon("facet-checked", { class: "pull-right", title: selected }));
     }
     var description = document.createElement('span');
     description.className = 'facet-value';
