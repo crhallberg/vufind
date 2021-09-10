@@ -93,21 +93,22 @@ var VuFind = (function VuFind() {
       }
     }
   };
-  var icon = function icon(icon, attrs = {}) {
-    if (typeof _icons[icon] == "undefined") {
-      console.error("JS icon missing: " + icon);
-      return icon;
+  var icon = function icon(name, attrs = {}) {
+    if (typeof _icons[name] == "undefined") {
+      console.error("JS icon missing: " + name);
+      return name;
     }
 
-    var html = _icons[icon];
+    var html = _icons[name];
 
     // Add additional attributes
-    function addAttrs(html, attrs = {}) {
-      var mod = String(html);
-      for (var attr in attrs) {
+    function addAttrs(_html, _attrs = {}) {
+      var mod = String(_html);
+      for (var attr in _attrs) {
+        if (Object.prototype.hasOwnProperty.call(_attrs, attr)) {
           var sliceStart = html.indexOf(" ");
           var sliceEnd = sliceStart;
-          var value = attrs[attr];
+          var value = _attrs[attr];
           var regex = new RegExp(` ${attr}=(['"])([^\\1]+?)\\1`);
           var existing = html.match(regex);
           if (existing) {
@@ -116,8 +117,9 @@ var VuFind = (function VuFind() {
             value = existing[2] + " " + value;
           }
           mod = mod.slice(0, sliceStart) +
-            " " + attr + '="' + value + '"' +
-            mod.slice(sliceEnd);
+              " " + attr + '="' + value + '"' +
+              mod.slice(sliceEnd);
+        }
       }
       return mod;
     }
@@ -135,11 +137,11 @@ var VuFind = (function VuFind() {
   // Icon shortcut methods
   var spinIcon = function spinIcon() {
     return icon('spinner', 'icon--spin');
-  }
+  };
   // Shortcut method
   var spinner = function spinner(extraClass = "") {
     return '<span class="loading-spinner ' + extraClass + '">' + icon('spinner', 'icon--spin') + ' ' + translate('loading') + '...</span>';
-  }
+  };
 
   /**
    * Reload the page without causing trouble with POST parameters while keeping hash
