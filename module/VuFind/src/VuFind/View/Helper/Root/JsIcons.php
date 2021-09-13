@@ -63,8 +63,7 @@ class JsIcons extends JsStringConveyor
     /**
      * Generate JSON from an array
      *
-     * @param array $strings Strings to translate (key = js key, value = string to
-     * translate)
+     * @param array $strings Strings to convey (key = js key, value = value to map)
      *
      * @return string
      */
