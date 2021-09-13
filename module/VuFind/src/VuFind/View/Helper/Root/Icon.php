@@ -113,6 +113,7 @@ class Icon extends AbstractHelper
      * @param StorageInterface $cache    Cache instance
      * @param EscapeHtmlAttr   $escAttr  EscapeHtmlAttr view helper
      * @param HeadLink         $headLink HeadLink view helper
+     * @param bool             $rtl      Are we in right to left text mode?
      */
     public function __construct(
         array $config,
