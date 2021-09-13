@@ -68,7 +68,7 @@ abstract class JsStringConveyor extends AbstractHelper
      * Transform strings before JSON encoding
      *
      * @param string|array $str String to transform
-     * @param string $key JSON object key
+     * @param string       $key JSON object key
      *
      * @return string
      */
