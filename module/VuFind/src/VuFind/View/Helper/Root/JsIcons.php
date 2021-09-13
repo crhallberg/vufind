@@ -61,18 +61,15 @@ class JsIcons extends JsStringConveyor
     }
 
     /**
-     * Generate JSON from an array
+     * Generate Icon from string
      *
-     * @param array $strings Strings to translate (key = js key, value = string to
-     * translate)
+     * @param string $str String to transform
+     * @param string $key JSON object key
      *
      * @return string
      */
-    public function getJSONFromArray(array $strings): string
+    protected function mapValue($icon): string
     {
-        foreach ($strings as $key => &$icon) {
-            $icon = ($this->iconHelper)($icon);
-        }
-        return json_encode($strings);
+        return ($this->iconHelper)($icon);
     }
 }

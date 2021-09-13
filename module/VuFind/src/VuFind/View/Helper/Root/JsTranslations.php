@@ -70,23 +70,21 @@ class JsTranslations extends JsStringConveyor
     }
 
     /**
-     * Generate JSON from an array
+     * Translate string
      *
-     * @param array $strings Strings to translate (key = js key, value = string to
-     * translate)
+     * @param string|array $translation String to translate
+     * @param string       $key         JSON object key
      *
      * @return string
      */
-    public function getJSONFromArray(array $strings): string
+    protected function mapValue($translation, string $key): string
     {
-        foreach ($strings as $key => &$translation) {
-            $translateFunc
-                = substr($key, -5) === '_html' || substr($key, -10) === '_unescaped'
-                ? $this->translate : $this->transEsc;
-            // $translation could be a string or an array of parameters; this code
-            // normalizes it into a parameter list for the translator.
-            $translation = ($translateFunc)(...((array)$translation));
-        }
-        return json_encode($strings);
+        $translateFunc
+            = substr($key, -5) === '_html' || substr($key, -10) === '_unescaped'
+            ? $this->translate : $this->transEsc;
+
+        // $translation could be a string or an array of parameters; this code
+        // normalizes it into a parameter list for the translator.
+        return ($translateFunc)(...((array)$translation));
     }
 }

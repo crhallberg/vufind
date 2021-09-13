@@ -38,7 +38,7 @@ use Laminas\View\Helper\AbstractHelper;
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/development Wiki
  */
-class JsStringConveyor extends AbstractHelper
+abstract class JsStringConveyor extends AbstractHelper
 {
     /**
      * Variable name to store values
@@ -65,6 +65,16 @@ class JsStringConveyor extends AbstractHelper
     }
 
     /**
+     * Transform strings before JSON encoding
+     *
+     * @param string|array $str String to transform
+     * @param string $key JSON object key
+     *
+     * @return string
+     */
+    abstract protected function mapValue($str, string $key): string;
+
+    /**
      * Add strings to the internal array.
      *
      * @param array $new Strings to add
@@ -79,16 +89,6 @@ class JsStringConveyor extends AbstractHelper
     }
 
     /**
-     * Generate JSON from the internal strings
-     *
-     * @return string
-     */
-    public function getJSON()
-    {
-        return $this->getJSONFromArray($this->strings);
-    }
-
-    /**
      * Generate JSON from an array
      *
      * @param array $strings Strings to translate (key = js key, value = string to
@@ -98,7 +98,21 @@ class JsStringConveyor extends AbstractHelper
      */
     public function getJSONFromArray(array $strings): string
     {
-        return json_encode($strings);
+        $ret = [];
+        foreach ($strings as $key => $str) {
+            $ret[$key] = $this->mapValue($str, $key);
+        }
+        return json_encode($ret);
+    }
+
+    /**
+     * Generate JSON from the internal strings
+     *
+     * @return string
+     */
+    public function getJSON()
+    {
+        return $this->getJSONFromArray($this->strings);
     }
 
     /**
