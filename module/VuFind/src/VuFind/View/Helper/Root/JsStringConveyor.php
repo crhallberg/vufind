@@ -4,7 +4,7 @@
  *
  * PHP version 7
  *
- * Copyright (C) Villanova University 2010.
+ * Copyright (C) Villanova University 2021.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2,
@@ -41,14 +41,14 @@ use Laminas\View\Helper\AbstractHelper;
 class JsStringConveyor extends AbstractHelper
 {
     /**
-     * Variable name to store translations
+     * Variable name to store values
      *
      * @var string
      */
     protected $varName;
 
     /**
-     * Strings to translate (key = js key, value = string to translate)
+     * Strings to translate (key = js key, value = mapped string)
      *
      * @var array
      */
@@ -57,9 +57,10 @@ class JsStringConveyor extends AbstractHelper
     /**
      * Constructor
      *
-     * @param string    $varName   Variable name to store translations
+     * @param string $varName Variable name to store values
      */
-    public function __construct($varName = 'vufindString') {
+    public function __construct($varName = 'vufindString')
+    {
         $this->varName = $varName;
     }
 
