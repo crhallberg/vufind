@@ -48,7 +48,7 @@ class JsStringConveyor extends AbstractHelper
     protected $varName;
 
     /**
-     * Strings to translate (key = js key, value = mapped string)
+     * Strings to convey (key = js key, value = mapped string)
      *
      * @var array
      */
@@ -91,8 +91,7 @@ class JsStringConveyor extends AbstractHelper
     /**
      * Generate JSON from an array
      *
-     * @param array $strings Strings to translate (key = js key, value = string to
-     * translate)
+     * @param array $strings Strings to convey (key = js key, value = mapped string)
      *
      * @return string
      */
