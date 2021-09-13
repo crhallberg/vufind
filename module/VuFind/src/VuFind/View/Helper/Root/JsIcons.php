@@ -64,10 +64,11 @@ class JsIcons extends JsStringConveyor
      * Generate Icon from string
      *
      * @param string $icon String to transform
+     * @param string $key  - not used -
      *
      * @return string
      */
-    protected function mapValue($icon): string
+    protected function mapValue($icon, string $key): string
     {
         return ($this->iconHelper)($icon);
     }
