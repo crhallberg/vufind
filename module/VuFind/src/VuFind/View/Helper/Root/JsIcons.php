@@ -63,8 +63,7 @@ class JsIcons extends JsStringConveyor
     /**
      * Generate Icon from string
      *
-     * @param string $str String to transform
-     * @param string $key JSON object key
+     * @param string $icon String to transform
      *
      * @return string
      */
