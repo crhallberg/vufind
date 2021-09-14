@@ -80,7 +80,7 @@ function buildFacetTree(treeNode, facetData, inSidebar) {
   var excludeTitle = treeNode.data('exclude-title');
 
   var results = buildFacetNodes(facetData, currentPath, allowExclude, excludeTitle, inSidebar);
-  treeNode.find('.icon--spin').parent().remove();
+  treeNode.find('.loading-spinner').parent().remove();
   if (inSidebar) {
     treeNode.on('loaded.jstree open_node.jstree', function treeNodeOpen(/*e, data*/) {
       treeNode.find('ul.jstree-container-ul > li.jstree-node').addClass('list-group-item');
@@ -103,9 +103,9 @@ function initFacetTree(treeNode, inSidebar)
   treeNode.data('loaded', true);
 
   if (inSidebar) {
-    treeNode.prepend('<li class="list-group-item">' + VuFind.icon('spinner', 'icon--spin') + '</li>');
+    treeNode.prepend('<li class="list-group-item">' + VuFind.spinIcon() + '</li>');
   } else {
-    treeNode.prepend('<div>' + VuFind.icon('spinner', 'icon--spin') + '<div>');
+    treeNode.prepend('<div>' + VuFind.spinIcon() + '<div>');
   }
   var request = {
     method: "getFacetData",

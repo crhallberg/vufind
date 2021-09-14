@@ -48,7 +48,7 @@ VuFind.register('lightbox', function Lightbox() {
   }
   function flashMessage(message, _type) {
     var type = _type || 'info';
-    _modalBody.find('.flash-message,.icon--spin').remove();
+    _modalBody.find('.flash-message,.loading-spinner').remove();
     _modalBody.find('h2:first-of-type')
       .after('<div class="flash-message alert alert-' + type + '">' + message + '</div>');
   }
