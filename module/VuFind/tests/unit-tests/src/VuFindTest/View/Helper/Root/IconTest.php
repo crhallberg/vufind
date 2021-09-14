@@ -75,6 +75,8 @@ class IconTest extends \PHPUnit\Framework\TestCase
                 'bar-rtl' => 'Fugue:zab.png',
                 'ltronly' => 'Fugue:ltronly.png',
                 'xyzzy' => 'FakeSprite:sprite',
+                'classy' => 'FontAwesome:spinner:extraClass',
+                'extraClassy' => 'Fugue:zzz.png:weird:class foo'
             ],
         ];
     }
@@ -153,6 +155,19 @@ class IconTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * Test that we can generate a font-based icon with an extra class.
+     *
+     * @return void
+     */
+    public function testFontIconWithExtraClass(): void
+    {
+        $helper = $this->getIconHelper();
+        $expected = '<span class="icon--font fa&#x20;fa-spinner extraClass" '
+            . 'role="img" aria-hidden="true"></span>';
+        $this->assertEquals($expected, trim($helper('classy')));
+    }
+
+    /**
      * Test that we can generate a font-based icon with extra attributes.
      *
      * @return void
@@ -214,6 +229,36 @@ class IconTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * Test that we can generate an image-based icon with extra classes in the
+     * configuration (including a class name with a colon in it).
+     *
+     * @return void
+     */
+    public function testImageIconWithExtraClasses(): void
+    {
+        $plugins = ['imageLink' => $this->getMockImageLink('icons/zzz.png')];
+        $helper = $this->getIconHelper(null, null, null, $plugins);
+        $expected = '<img class="icon--img weird:class foo" src="zzz.png" aria-hidden="true"/>';
+        $this->assertEquals($expected, trim($helper('extraClassy')));
+    }
+
+    /**
+     * Test that we can generate an image-based icon with extras.
+     *
+     * @return void
+     */
+    public function testImageIconWithExtras(): void
+    {
+        $plugins = ['imageLink' => $this->getMockImageLink('icons/baz.png')];
+        $helper = $this->getIconHelper(null, null, null, $plugins);
+        $expected
+            = '<img class="icon--img myclass" src="baz.png" aria-hidden="true"/>';
+        // Send a string, validating the shortcut where strings are treated as
+        // classes, in addition to confirming that extras work for image icons.
+        $this->assertEquals($expected, trim($helper('bar', 'myclass')));
+    }
+
+    /**
      * Test RTL
      *
      * @return void
@@ -248,5 +293,25 @@ class IconTest extends \PHPUnit\Framework\TestCase
 </svg>
 EXPECTED;
         $this->assertEquals($expected, trim($helper('xyzzy')));
+    }
+
+    /**
+     * Test that we can generate an SVG icon with extras.
+     *
+     * @return void
+     */
+    public function testSvgIconWithExtras(): void
+    {
+        $plugins = ['imageLink' => $this->getMockImageLink('mysprites.svg')];
+        $helper = $this->getIconHelper(null, null, null, $plugins);
+        $expected = <<<EXPECTED
+<svg class="icon--svg myclass" data-foo="bar" aria-hidden="true">
+    <use xlink:href="mysprites.svg#sprite"></use>
+</svg>
+EXPECTED;
+        $this->assertEquals(
+            $expected,
+            trim($helper('xyzzy', ['class' => 'myclass', 'data-foo' => 'bar']))
+        );
     }
 }
