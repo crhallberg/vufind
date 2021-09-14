@@ -90,8 +90,9 @@ return [
             /**
              * Icons can be assigned or overriden here
              *
-             * Format: 'icon' => [set:]icon
+             * Format: 'icon' => [set:]icon[:extra_classes]
              * Icons assigned without set will use the defaultSet.
+             * In order to specify extra CSS classes, you must also specify a set.
              *
              * All of the items below have been specified with FontAwesome to allow
              * for a strong inheritance safety net but this is not required.
@@ -154,7 +155,7 @@ return [
             'sign-in' => 'FontAwesome:sign-in',
             'sign-out' => 'FontAwesome:sign-out',
             'sms' => 'FontAwesome:phone',
-            'spinner' => 'FontAwesome:spinner',
+            'spinner' => 'FontAwesome:spinner:icon--spin',
             'status-ready' => 'FontAwesome:bell',
             'status-pending' => 'FontAwesome:clock-o',
             'storage-retrieval' => 'FontAwesome:flag',
