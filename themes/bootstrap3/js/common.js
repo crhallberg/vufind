@@ -136,11 +136,12 @@ var VuFind = (function VuFind() {
   };
   // Icon shortcut methods
   var spinIcon = function spinIcon() {
-    return icon('spinner', 'loading-spinner icon--spin');
+    return icon('spinner', 'loading-spinner');
   };
   // Shortcut method
   var spinner = function spinner(extraClass = "") {
-    return '<span class="loading-spinner ' + extraClass + '">' + icon('spinner', 'icon--spin') + ' ' + translate('loading') + '...</span>';
+    let className = ("loading-spinner " + extraClass).trim();
+    return '<span class="' + className + '">' + icon('spinner') + translate('loading') + '...</span>';
   };
 
   /**
