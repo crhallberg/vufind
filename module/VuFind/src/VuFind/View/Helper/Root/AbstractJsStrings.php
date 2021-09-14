@@ -1,6 +1,6 @@
 <?php
 /**
- * JsStringConveyor helper for passing transformed text to Javascript
+ * AbstractJsStrings helper for passing transformed text to Javascript
  *
  * PHP version 7
  *
@@ -30,7 +30,7 @@ namespace VuFind\View\Helper\Root;
 use Laminas\View\Helper\AbstractHelper;
 
 /**
- * JsStringConveyor helper for passing transformed text to Javascript
+ * AbstractJsStrings helper for passing transformed text to Javascript
  *
  * @category VuFind
  * @package  View_Helpers
@@ -38,7 +38,7 @@ use Laminas\View\Helper\AbstractHelper;
  * @license  http://opensource.org/licenses/gpl-2.0.php GNU General Public License
  * @link     https://vufind.org/wiki/development Wiki
  */
-abstract class JsStringConveyor extends AbstractHelper
+abstract class AbstractJsStrings extends AbstractHelper
 {
     /**
      * Variable name to store values
