@@ -154,7 +154,7 @@ return [
             'sign-in' => 'FontAwesome:sign-in',
             'sign-out' => 'FontAwesome:sign-out',
             'sms' => 'FontAwesome:phone',
-            'spinner' => 'FontAwesome:spinner fa-spin',
+            'spinner' => 'FontAwesome:spinner',
             'status-ready' => 'FontAwesome:bell',
             'status-pending' => 'FontAwesome:clock-o',
             'storage-retrieval' => 'FontAwesome:flag',
