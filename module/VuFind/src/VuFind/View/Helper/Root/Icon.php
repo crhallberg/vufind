@@ -171,6 +171,9 @@ class Icon extends AbstractHelper
     {
         $attrStr = '';
         foreach ($attrs as $key => $val) {
+            if ($key == 'class') {
+                continue;
+            }
             $attrStr .= ' ' . $key . '="' . ($this->esc)($val) . '"';
         }
         return $attrStr;
@@ -227,7 +230,7 @@ class Icon extends AbstractHelper
                     [
                         'icon' => ($this->esc)($icon),
                         'attrs' => $this->compileAttrs($attrs),
-                        'extra' => $attrs
+                        'extra' => $attrs,
                     ]
                 )
             );
