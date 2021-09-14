@@ -692,7 +692,7 @@ final class FavoritesTest extends \VuFindTest\Integration\MinkTestCase
         foreach ($links as $link) {
             $data[] = [
                 'text' => $link->getText(),
-                'iconCount' => count($link->findAll('css', 'i.fa-globe')),
+                'iconCount' => count($link->findAll('css', '.fa-globe')),
             ];
             $hrefs[] = $link->getAttribute('href');
         }
@@ -706,12 +706,12 @@ final class FavoritesTest extends \VuFindTest\Integration\MinkTestCase
         // The "Future List" should NOT be public:
         $this->clickCss($page, 'a[href="' . $hrefs[0] . '"]');
         $this->snooze();
-        $this->assertEquals(0, count($page->findAll('css', 'strong i.fa-globe')));
+        $this->assertEquals(0, count($page->findAll('css', 'strong .fa-globe')));
 
         // The "Test List" SHOULD be public:
         $this->clickCss($page, 'a[href="' . $hrefs[2] . '"]');
         $this->snooze();
-        $this->assertEquals(1, count($page->findAll('css', 'strong i.fa-globe')));
+        $this->assertEquals(1, count($page->findAll('css', 'strong .fa-globe')));
     }
 
     /**

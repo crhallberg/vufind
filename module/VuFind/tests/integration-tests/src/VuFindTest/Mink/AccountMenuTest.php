@@ -326,7 +326,7 @@ final class AccountMenuTest extends \VuFindTest\Integration\MinkTestCase
             $this->setJSStorage($item);
             $session->reload();
             $page = $session->getPage();
-            $this->findCss($page, '#account-icon' . $checkClass);
+            $this->findCss($page, '#account-icon ' . $checkClass);
             foreach ($item as $key => $value) {
                 $session->evaluateScript('VuFind.account.clearCache("' . $key . '");');
             }
