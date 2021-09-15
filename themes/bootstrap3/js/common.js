@@ -135,13 +135,14 @@ var VuFind = (function VuFind() {
     return html;
   };
   // Icon shortcut methods
-  var spinIcon = function spinIcon() {
-    return icon('spinner', 'loading-spinner');
-  };
-  // Shortcut method
   var spinner = function spinner(extraClass = "") {
     let className = ("loading-spinner " + extraClass).trim();
-    return '<span class="' + className + '">' + icon('spinner') + translate('loading') + '...</span>';
+    return '<span class="' + className + '">' + icon('spinner') + '</span>';
+  };
+  var loading = function loading(text = null, extraClass = "") {
+    let className = ("loading-spinner " + extraClass).trim();
+    let string = translate(text ?? "loading");
+    return '<span class="' + className + '">' + icon('spinner') + string + '...</span>';
   };
 
   /**
@@ -173,8 +174,8 @@ var VuFind = (function VuFind() {
     listen: listen,
     refreshPage: refreshPage,
     register: register,
-    spinIcon: spinIcon,
     spinner: spinner,
+    loading: loading,
     translate: translate
   };
 })();

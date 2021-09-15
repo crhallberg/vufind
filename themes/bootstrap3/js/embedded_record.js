@@ -54,7 +54,7 @@ VuFind.register('embedded', function embedded() {
       urlroot = source.charAt(0).toUpperCase() + source.slice(1).toLowerCase() + 'Record';
     }
     if (!$tab.hasClass('loaded')) {
-      $('#' + tabid + '-content').html(VuFind.spinner());
+      $('#' + tabid + '-content').html(VuFind.loading());
       var tab = tabid.split('_');
       tab = tab[0];
       $.ajax({
@@ -103,7 +103,7 @@ VuFind.register('embedded', function embedded() {
       longNode = $('<div class="long-view collapse"></div>');
       // Add loading status
       shortNode
-        .before('<div class="loading hidden">' + VuFind.spinner() + '</div>')
+        .before('<div class="loading hidden">' + VuFind.loading() + '</div>')
         .before(longNode);
       longNode.on('show.bs.collapse', function embeddedExpand() {
         $link.addClass('expanded');

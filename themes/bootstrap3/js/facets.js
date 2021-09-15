@@ -19,18 +19,21 @@ function buildFacetNodes(data, currentPath, allowExclude, excludeTitle, counts)
     }
     item.setAttribute('title', facet.displayText);
     item.setAttribute('role', 'menuitem');
+    var icon = document.createElement('span');
+    icon.className = "hierarchy-facet-icon";
     if (facet.operator === 'OR') {
       if (facet.isApplied) {
-        item.append(VuFind.icon("facet-unchecked"));
+        icon.innerHTML = VuFind.icon("facet-unchecked");
       } else {
-        item.append(VuFind.icon("facet-checked"));
+        icon.innerHTML = VuFind.icon("facet-checked");
       }
     } else if (facet.isApplied) {
-      item.append(VuFind.icon("facet-checked", { class: "pull-right", title: selected }));
+      icon.innerHTML = VuFind.icon("facet-checked", { class: "pull-right", title: selected });
     }
     var description = document.createElement('span');
     description.className = 'facet-value';
     description.innerHTML = facet.displayText;
+    item.appendChild(icon);
     item.appendChild(description);
     html.appendChild(item);
 
@@ -103,9 +106,9 @@ function initFacetTree(treeNode, inSidebar)
   treeNode.data('loaded', true);
 
   if (inSidebar) {
-    treeNode.prepend('<li class="list-group-item">' + VuFind.spinIcon() + '</li>');
+    treeNode.prepend('<li class="list-group-item">' + VuFind.spinner() + '</li>');
   } else {
-    treeNode.prepend('<div>' + VuFind.spinIcon() + '<div>');
+    treeNode.prepend('<div>' + VuFind.spinner() + '<div>');
   }
   var request = {
     method: "getFacetData",
@@ -130,8 +133,9 @@ VuFind.register('sideFacets', function SideFacets() {
   function showLoadingOverlay(e, data) {
     e.preventDefault();
     var overlay = '<div class="facet-loading-overlay">'
-      + '<span class="facet-loading-overlay-label">' + VuFind.translate('loading')
-      + "...</span></div>";
+      + '<span class="facet-loading-overlay-label">'
+      + VuFind.loading()
+      + "</span></div>";
     $(this).closest(".collapse").append(overlay);
     // This callback operates both as a click handler and a JSTree callback;
     // if the data element is undefined, we assume we are handling a click.

@@ -21,26 +21,6 @@
 /* --- Look --- */
 .hierarchy-tree,
 .jstree-facet {
-  /* jsTree arrows */
-  .jstree-ocl:before {
-    float: left;
-    width: 10px;
-    padding: 0;
-    margin-left: -10px;
-    font-family: 'FontAwesome';
-    font-style: normal;
-    font-weight: normal;
-    cursor: pointer;
-    text-decoration: inherit;
-    speak: none;
-  }
-  .jstree-open > .jstree-ocl:before   {content: "\f0d7";} // .fa-caret-down
-  .jstree-closed > .jstree-ocl:before {content: "\f0da";} // .fa-caret-right
-  .jstree-leaf > .jstree-ocl:before   {content: " ";}
-  .jstree-icon {
-    width: 16px;
-    color: #000;
-  }
   .jstree-anchor { padding-left: 5px; }
   .jstree-container-ul,
   .jstree-children {
@@ -87,23 +67,6 @@
 }
 
 /* --- Facets --- */
-.facet .jstree-ocl:before {
-  float: left;
-  width: 10px;
-  padding: 0;
-  margin-left: -10px;
-  font-family: 'FontAwesome';
-  font-weight: normal;
-  font-style: normal;
-  text-decoration:inherit;
-  cursor: pointer;
-  speak: none;
-}
-.facet .jstree-default {
-  & .jstree-open > .jstree-ocl:before {content: "\f0d7";}
-  & .jstree-closed > .jstree-ocl:before {content: "\f0da";}
-  & .jstree-leaf > .jstree-ocl:before {content: " ";}
-}
 /* facet list styling */
 .jstree-facet li span.main {
   overflow: hidden;
