@@ -142,7 +142,7 @@ function handleAjaxTabLinks(_context) {
       $a.unbind('click').click(function linkClick() {
         var tabid = $('.record-tabs .nav-tabs li.active').data('tab');
         var $tab = $('.' + tabid + '-tab');
-        $tab.html(VuFind.loading() + '</div>');
+        $tab.html('<div class="tab-pane ' + tabid + '-tab">' + VuFind.loading() + '</div>');
         ajaxLoadTab($tab, '', false, href);
         return false;
       });
