@@ -22,7 +22,6 @@
 .facet-load-indicator {
   display: flex;
   padding: .5rem;
-  width: 100%;
   line-height: 1.5rem;
   background-color: transparent;
 
@@ -51,7 +50,8 @@
   border-bottom: 1px solid $list-group-border;
 }
 .facet-group .title {
-  display: flex;
+  display: block;
+  width: 100%;
   padding-right: 8px;
   border: 1px solid $list-group-border;
   font-weight: bold;
@@ -162,6 +162,7 @@ body.rtl .full-facet-list .active .fa.fa-times { float: left; }
     padding: 0;
   }
   .list-group-item {
+    padding-left: 0.5rem;
     padding-right: 0;
     border: 0;
     border-bottom: 1px solid $list-group-border;
@@ -176,6 +177,7 @@ body.rtl .full-facet-list .active .fa.fa-times { float: left; }
 }
 .more-less-btn-wrapper .facet {
   display: block;
+  width: 100%;
 }
 
 .facet-range-form {
