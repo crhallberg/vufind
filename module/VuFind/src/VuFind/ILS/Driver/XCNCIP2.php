@@ -209,6 +209,27 @@ class XCNCIP2 extends AbstractBase implements \VuFindHttp\HttpServiceAwareInterf
     protected $tokenBasicAuth = false;
 
     /**
+     * If the NCIP need an authorization using HTTP Basic
+     *
+     * @var bool
+     */
+    protected $useHttpBasic = false;
+
+    /**
+     * HTTP Basic username
+     *
+     * @var string
+     */
+    protected $username;
+
+    /**
+     * HTTP Basic password
+     *
+     * @var string
+     */
+    protected $password;
+
+    /**
      * Mapping block messages from NCIP API to VuFind internal values
      *
      * @var array
@@ -231,6 +252,15 @@ class XCNCIP2 extends AbstractBase implements \VuFindHttp\HttpServiceAwareInterf
      * @var string
      */
     protected $translationDomain = 'ILSMessages';
+
+    /**
+     * Other than 2xx HTTP status codes, which could be accepted as correct response.
+     * Some NCIP servers could return some 4xx codes similar to REST API (like 404
+     * Not found) altogether with correct XML in response body.
+     *
+     * @var array
+     */
+    protected $otherAcceptedHttpStatusCodes = [];
 
     /**
      * Constructor
@@ -280,9 +310,24 @@ class XCNCIP2 extends AbstractBase implements \VuFindHttp\HttpServiceAwareInterf
             && ($this->config['Catalog']['clientSecret'] ?? false);
         $this->tokenBasicAuth = $this->config['Catalog']['tokenBasicAuth'] ?? false;
 
+        $this->useHttpBasic = ($this->config['Catalog']['httpBasicAuth'] ?? false)
+            && ($this->config['Catalog']['username'] ?? false)
+            && ($this->config['Catalog']['password'] ?? false);
+
+        $this->username = $this->config['Catalog']['username'] ?? '';
+        $this->password = $this->config['Catalog']['password'] ?? '';
+
         if (isset($this->config['Catalog']['translationDomain'])) {
             $this->translationDomain
                 = $this->config['Catalog']['translationDomain'];
+        }
+
+        if (isset($this->config['Catalog']['otherAcceptedHttpStatusCodes'])) {
+            $this->otherAcceptedHttpStatusCodes
+                = explode(
+                    ',',
+                    $this->config['Catalog']['otherAcceptedHttpStatusCodes']
+                );
         }
     }
 
@@ -379,11 +424,13 @@ class XCNCIP2 extends AbstractBase implements \VuFindHttp\HttpServiceAwareInterf
      */
     protected function sendRequest($xml)
     {
-        $this->debug('Sendig NCIP request: ' . $xml);
+        $this->debug('Sending NCIP request: ' . $xml);
         $client = $this->httpService->createClient($this->url);
         if ($this->useOAuth2) {
             $client->getRequest()->getHeaders()
                 ->addHeaderLine('Authorization', $this->getOAuth2Token());
+        } elseif ($this->useHttpBasic) {
+            $client->setAuth($this->username, $this->password);
         }
         // Set timeout value
         $timeout = $this->config['Catalog']['http_timeout'] ?? 30;
@@ -411,7 +458,12 @@ class XCNCIP2 extends AbstractBase implements \VuFindHttp\HttpServiceAwareInterf
             }
         }
 
-        if (!$result->isSuccess()) {
+        if (!$result->isSuccess()
+            && !in_array(
+                $result->getStatusCode(),
+                $this->otherAcceptedHttpStatusCodes
+            )
+        ) {
             throw new ILSException(
                 'HTTP error: ' . $this->parseProblem($result->getBody())
             );
@@ -1960,7 +2012,8 @@ class XCNCIP2 extends AbstractBase implements \VuFindHttp\HttpServiceAwareInterf
                 $renewDetails['patron']['cat_password'],
                 $itemId,
                 $agencyId,
-                $renewDetails['patron']['patronAgencyId']
+                $renewDetails['patron']['patronAgencyId'],
+                $renewDetails['patron']['cat_username']
             );
             $response = $this->sendRequest($request);
             $dueDateXml = $response->xpath('ns1:RenewItemResponse/ns1:DateDue');
@@ -2032,9 +2085,10 @@ class XCNCIP2 extends AbstractBase implements \VuFindHttp\HttpServiceAwareInterf
         $itemId,
         $patronId = null
     ) {
-        if ($requestId === null && $itemId === null) {
+        if (empty($requestId) && empty($itemId)) {
             throw new ILSException('No identifiers for CancelRequest');
         }
+        $itemAgencyId = $this->determineToAgencyId($itemAgencyId);
         $ret = $this->getNCIPMessageStart() .
             '<ns1:CancelRequestItem>' .
             $this->getInitiationHeaderXml($patronAgency) .
@@ -2042,14 +2096,14 @@ class XCNCIP2 extends AbstractBase implements \VuFindHttp\HttpServiceAwareInterf
 
         $ret .= $this->getUserIdXml($patronAgency, $patronId);
 
-        if ($requestId !== null) {
+        if (!empty($requestId)) {
             $ret .=
                 '<ns1:RequestId>' .
                     $this->element('AgencyId', $itemAgencyId) .
                     $this->element('RequestIdentifierValue', $requestId) .
                 '</ns1:RequestId>';
         }
-        if ($itemId !== null) {
+        if (!empty($itemId)) {
             $ret .= $this->getItemIdXml($itemAgencyId, $itemId);
         }
         $ret .= $this->getRequestTypeXml($type) .
@@ -2127,6 +2181,7 @@ class XCNCIP2 extends AbstractBase implements \VuFindHttp\HttpServiceAwareInterf
         $patronAgencyId,
         $patronId = null
     ) {
+        $itemAgencyId = $this->determineToAgencyId($itemAgencyId);
         return $this->getNCIPMessageStart() .
             '<ns1:RenewItem>' .
             $this->getInitiationHeaderXml($patronAgencyId) .
@@ -2292,6 +2347,7 @@ class XCNCIP2 extends AbstractBase implements \VuFindHttp\HttpServiceAwareInterf
      */
     protected function getItemIdXml($agency, $itemId, $idType = null)
     {
+        $agency = $this->determineToAgencyId($agency);
         $ret = '<ns1:ItemId>' . $this->element('AgencyId', $agency);
         if ($idType !== null) {
             $ret .= $this->element('ItemIdentifierType', $idType);
@@ -2539,7 +2595,7 @@ class XCNCIP2 extends AbstractBase implements \VuFindHttp\HttpServiceAwareInterf
     {
         // FIXME: We are using the first defined agency, it will probably not work in
         // consortium scenario
-        if (null === $agency) {
+        if (empty($agency)) {
             $keys = array_keys($this->agency);
             $agency = $keys[0];
         }

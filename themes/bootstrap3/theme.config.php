@@ -43,6 +43,7 @@ return [
         ['file' => 'common.js', 'priority' => 310],
         ['file' => 'lightbox.js', 'priority' => 320],
         ['file' => 'truncate.js', 'priority' => 330],
+        ['file' => 'trigger_print.js', 'priority' => 340],
     ],
     'less' => [
         'active' => false,
@@ -80,7 +81,11 @@ return [
             'FontAwesome' => [
                 'template' => 'font',
                 'prefix' => 'fa fa-',
-                'src' => 'vendor/font-awesome.min.css',
+                // Right now, FontAwesome is bundled into compiled.css; when we no
+                // longer globally rely on FA (by managing all icons through the
+                // helper), we should change this to 'vendor/font-awesome.min.css'
+                // so it only loads conditionally when icons are used.
+                'src' => 'compiled.css',
             ],
             'Collapse' => [
                 'template' => 'collapse',

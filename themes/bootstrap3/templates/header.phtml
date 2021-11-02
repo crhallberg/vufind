@@ -22,7 +22,8 @@
             <li id="cartSummary">
               <a id="cartItems" data-lightbox title="<?=$this->transEscAttr('View Book Bag')?>" href="<?=$this->url('cart-home')?>">
                 <?=$this->icon('cart') ?>
-                <strong><?=count($cart->getItems())?></strong> <?=$this->transEsc('items')?>
+                <span class="sr-only"><?=$this->transEsc('Book Bag')?>:</span>
+                <span role="status"><strong><?=count($cart->getItems())?></strong> <?=$this->transEsc('items')?></span>
                 <span class="full<?=!$cart->isFull() ? ' hidden' : '' ?>">(<?=$this->transEsc('bookbag_full') ?>)</span>
               </a>
             </li>
