@@ -56,12 +56,12 @@
         <td>
           <?php if ($this->showSaved): ?>
             <a href="<?=$this->url('myresearch-savesearch')?>?delete=<?=urlencode($info->getSearchId())?>&amp;mode=history" class="text-danger">
-              <?=$this->icon('delete') ?>
+              <?=$this->icon('search-delete') ?>
               <?=$this->transEsc("history_delete_link")?>
             </a>
           <?php else: ?>
             <a href="<?=$this->url('myresearch-savesearch')?>?save=<?=urlencode($info->getSearchId())?>&amp;mode=history">
-              <?=$this->icon('save') ?>
+              <?=$this->icon('search-save') ?>
               <?=$this->transEsc("history_save_link")?>
             </a>
           <?php endif; ?>

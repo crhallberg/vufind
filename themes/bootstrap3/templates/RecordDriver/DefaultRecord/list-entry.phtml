@@ -182,7 +182,7 @@
       </div>
 
       <div class="result-links hidden-print">
-        <?=$this->icon('edit') ?> <a href="<?=$this->url('myresearch-edit')?>?id=<?=urlencode($id)?>&amp;source=<?=urlencode($source)?><?php if (null !== $list_id):?>&amp;list_id=<?=urlencode($list_id)?><?php endif; ?>" class="edit tool"><?=$this->transEsc('Edit')?></a><br/>
+        <?=$this->icon('user-list-entry-edit') ?> <a href="<?=$this->url('myresearch-edit')?>?id=<?=urlencode($id)?>&amp;source=<?=urlencode($source)?><?php if (null !== $list_id):?>&amp;list_id=<?=urlencode($list_id)?><?php endif; ?>" class="edit tool"><?=$this->transEsc('Edit')?></a><br/>
         <?php /* Use a different delete URL if we're removing from a specific list or the overall favorites: */
           $deleteUrl = null === $list_id
               ? $this->url('myresearch-favorites')
@@ -192,7 +192,7 @@
           $dLabel = 'delete-label-' . preg_replace('[\W]', '-', $id);
         ?>
         <div class="dropdown">
-          <?=$this->icon('delete') ?> <a class="dropdown-toggle" id="<?=$dLabel ?>" role="button" data-toggle="dropdown" href="<?=$deleteUrlGet ?>">
+          <?=$this->icon('user-list-remove') ?> <a class="dropdown-toggle" id="<?=$dLabel ?>" role="button" data-toggle="dropdown" href="<?=$deleteUrlGet ?>">
             <?=$this->transEsc('Delete') ?>
           </a>
           <ul class="dropdown-menu" role="menu" aria-labelledby="<?=$dLabel ?>">

@@ -19,12 +19,12 @@
       </div>
       <?php if ($this->userlist()->getMode() !== 'disabled'): ?>
         <button type="submit" class="toolbar-btn" name="saveCart" value="1" title="<?=$this->transEscAttr('bookbag_save')?>" value="1">
-          <?=$this->icon('save') ?>
+          <?=$this->icon('user-list-add') ?>
           <?=$this->transEsc('Save')?>
         </button>
       <?php endif; ?>
       <button type="submit" class="toolbar-btn" name="email" value="1" title="<?=$this->transEscAttr('bookbag_email')?>" value="1">
-        <?=$this->icon('email') ?>
+        <?=$this->icon('send-email') ?>
         <?=$this->transEsc('Email')?>
       </button>
       <?php $exportOptions = $this->export()->getActiveFormats('bulk'); if (count($exportOptions) > 0): ?>
@@ -39,7 +39,7 @@
       </button>
       <div class="btn-group" id="cartDelete">
         <button type="submit" name="delete" value="1" class="toolbar-btn dropdown-toggle" data-toggle="dropdown" id="cart-delete-label" value="1">
-          <?=$this->icon('delete') ?>
+          <?=$this->icon('cart-remove') ?>
           <?=$this->transEsc('Delete')?>
         </button>
         <ul class="dropdown-menu" role="menu" aria-labelledby="cart-delete-label">
