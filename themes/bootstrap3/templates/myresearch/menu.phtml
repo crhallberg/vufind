@@ -84,13 +84,14 @@
     </a>
     <?php $lists = $user->getLists() ?>
     <?php
-      // Use a variable so that we can output this nicely without whitespace that would get underlined:
-      $publicInd = '<i class="fa fa-globe" title="' . $this->transEscAttr('public_list_indicator') . '">'
-        . '</i> <span class="sr-only">(' . $this->transEsc('public_list_indicator') . ')</span>';
+      $publicInd = $this->icon(
+        'user-public-list-indicator',
+        ['title' => $this->transEscAttr('public_list_indicator')]
+      );
     ?>
     <?php foreach ($lists as $list): ?>
       <a class="user-list-link" href="<?=$this->url('userList', ['id' => $list['id']])?>"<?=$this->active == 'list' . $list['id'] ? ' class="active"' : ''?>>
-        <?=$this->escapeHtml($list['title'])?><?=$list['public'] ? $publicInd : ''?>
+        <?=$this->icon('user-list') ?><?=$this->escapeHtml($list['title'])?><?=$list['public'] ? $publicInd : ''?>
         <span class="badge"><?=$list->cnt ?></span>
       </a>
     <?php endforeach; ?>
