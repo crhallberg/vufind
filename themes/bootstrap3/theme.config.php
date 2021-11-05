@@ -112,7 +112,7 @@ return [
             'cart-empty' => 'FontAwesome:times',
             'cart-remove' => 'FontAwesome:minus-circle',
             'cite' => 'FontAwesome:asterisk',
-            'collapse' => 'Collapse:_', // no icon needed, uses two below
+            'collapse' => 'Collapse:_', // uses the icons below
             'collapse-close' => 'FontAwesome:chevron-up',
             'collapse-open' => 'FontAwesome:chevron-down',
             'cover-replacement' => 'FontAwesome:question',
