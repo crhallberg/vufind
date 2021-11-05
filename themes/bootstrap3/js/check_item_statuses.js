@@ -65,7 +65,7 @@ VuFind.register('itemStatuses', function ItemStatuses() {
         } else {
           locationListHTML +=
             '<span class="text-danger">' +
-              VuFind.icon('ui-close') +
+              VuFind.icon('ui-failure') +
               result.locationList[x].location +
             '</span> ';
         }
