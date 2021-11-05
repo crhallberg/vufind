@@ -15,10 +15,11 @@ VuFind.register('account', function Account() {
     "DANGER": 3
   };
   var _accountIcons = {};
-  _accountIcons[ICON_LEVELS.NONE] = ["my-account", "ajax-status-none"];
-  _accountIcons[ICON_LEVELS.GOOD] = ["notification", "ajax-status-good text-success"];
-  _accountIcons[ICON_LEVELS.WARNING] = ["notification", "ajax-status-warning text-warning"];
-  _accountIcons[ICON_LEVELS.DANGER] = ["warning", "ajax-status-danger text-danger"];
+  //                                [icon, additional class]
+  _accountIcons[ICON_LEVELS.NONE] = ["my-account", "account-status-none"];
+  _accountIcons[ICON_LEVELS.GOOD] = ["my-account-notification", "account-status-good text-success"];
+  _accountIcons[ICON_LEVELS.WARNING] = ["my-account-notification", "account-status-warning text-warning"];
+  _accountIcons[ICON_LEVELS.DANGER] = ["my-account-warning", "account-status-danger text-danger"];
 
   var _submodules = [];
 
