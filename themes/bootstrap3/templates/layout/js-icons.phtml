@@ -9,6 +9,7 @@ $list = [
     'collapse',
     'collapse-close',
     'collapse-open',
+    'facet-applied',
     'facet-checked',
     'facet-exclude',
     'facet-unchecked',
@@ -22,14 +23,14 @@ $list = [
     'status-pending',
     'status-ready',
     // Record statuses
-    'check',
     'place-hold',
     'place-ill-request',
     'place-storage-retrieval',
     'status-indicator',
+    'ui-success',
 ];
 
-// To save redundancy: zip list together
+// Zip list together
 // ala 'icon' => 'icon'
 $this->jsIcons()->addStrings(array_combine($list, $list));
 

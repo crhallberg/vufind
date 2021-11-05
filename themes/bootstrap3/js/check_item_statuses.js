@@ -49,7 +49,7 @@ VuFind.register('itemStatuses', function ItemStatuses() {
         if (result.locationList[x].availability) {
           locationListHTML +=
             '<span class="text-success">' +
-              VuFind.icon("check") + " " +
+              VuFind.icon("ui-success") + " " +
               result.locationList[x].location +
             '</span> ';
         } else if (typeof(result.locationList[x].status_unknown) !== 'undefined'

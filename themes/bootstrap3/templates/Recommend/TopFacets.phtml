@@ -29,7 +29,7 @@
                     $removeLink = $this->currentPath() . $results->getUrlQuery()->removeFacet($title, $thisFacet['value'], $thisFacet['operator']);
                   } ?>
                   <a href="<?=$removeLink ?>" class="applied">
-                    <?=$this->escapeHtml($thisFacet['displayText'])?> <?=$this->icon('check') ?><!--
+                    <?=$this->escapeHtml($thisFacet['displayText'])?> <?=$this->icon('facet-applied') ?><!--
                --></a>
                 <?php else: ?>
                   <a href="<?=$this->currentPath() . $results->getUrlQuery()->addFacet($title, $thisFacet['value'], $thisFacet['operator'])?>">
