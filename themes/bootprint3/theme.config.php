@@ -94,6 +94,8 @@ return [
             // 'tag-add' => 'Alias:ui-add',
             // 'tag-remove' => 'Alias:ui-remove',
             'tree-context' => 'Fugue:treeCurrent.png',
+            'truncate-less' => 'Fugue:arrow_up.png',
+            'truncate-more' => 'Fugue:arrow_down.png',
             'ui-add' => 'Fugue:add.png',
             'ui-cancel' => 'Fugue:cancel.png',
             'ui-close' => 'Fugue:cross.png',

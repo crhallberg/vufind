@@ -178,7 +178,6 @@ return [
             'tree-context' => 'FontAwesome:sitemap',
             'truncate-less' => 'FontAwesome:arrow-up',
             'truncate-more' => 'FontAwesome:arrow-down',
-            'tree-context' => 'FontAwesome:sitemap',
             'ui-add' => 'FontAwesome:plus-circle',
             'ui-cancel' => 'FontAwesome:ban',
             'ui-close' => 'FontAwesome:times',
