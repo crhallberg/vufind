@@ -43,7 +43,7 @@ function buildFacetNodes(data, currentPath, allowExclude, excludeTitle, counts)
       badge.appendChild(document.createTextNode(facet.count.toString().replace(/\B(?=(\d{3})+\b)/g, separator)));
       html.appendChild(badge);
       if (allowExclude) {
-        var excludeUrl = encodeURIComponent(currentPath + facet.exclude);
+        var excludeUrl = currentPath + facet.exclude;
         var a = document.createElement('a');
         a.className = 'exclude';
         a.setAttribute('href', excludeUrl);
