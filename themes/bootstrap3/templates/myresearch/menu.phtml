@@ -82,16 +82,20 @@
     <a href="<?=$this->url('myresearch-favorites')?>"<?=$this->active == 'favorites' ? ' class="active"' : ''?>>
       <?=$this->icon('user-favorites') ?><?=$this->transEsc('Your Favorites')?>
     </a>
-    <?php $lists = $user->getLists() ?>
+
     <?php
+      // Use a variable so that we can output this nicely without whitespace that would get underlined:
       $publicInd = $this->icon(
-          'user-public-list-indicator',
-          [
-            'class' => 'user-list__public-icon',
-            'title' => $this->transEscAttr('public_list_indicator'),
-          ]
+        'user-public-list-indicator',
+        [
+          'class' => 'user-list__public-icon',
+          'title' => $this->transEscAttr('public_list_indicator'),
+        ]
       );
+      $publicInd .= '<span class="sr-only">(' . $this->transEsc('public_list_indicator') . ')</span>';
     ?>
+
+    <?php $lists = $user->getLists() ?>
     <?php foreach ($lists as $list): ?>
       <a class="user-list-link" href="<?=$this->url('userList', ['id' => $list['id']])?>"<?=$this->active == 'list' . $list['id'] ? ' class="active"' : ''?>>
         <?=$this->icon('user-list') ?><?=$this->escapeHtml($list['title'])?><?=$list['public'] ? $publicInd : ''?>
