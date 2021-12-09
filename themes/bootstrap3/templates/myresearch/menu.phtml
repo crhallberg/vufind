@@ -86,11 +86,11 @@
     <?php
       // Use a variable so that we can output this nicely without whitespace that would get underlined:
       $publicInd = $this->icon(
-        'user-public-list-indicator',
-        [
-          'class' => 'user-list__public-icon',
-          'title' => $this->transEscAttr('public_list_indicator'),
-        ]
+          'user-public-list-indicator',
+          [
+            'class' => 'user-list__public-icon',
+            'title' => $this->transEscAttr('public_list_indicator'),
+          ]
       );
       $publicInd .= '<span class="sr-only">(' . $this->transEsc('public_list_indicator') . ')</span>';
     ?>
