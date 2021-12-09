@@ -270,4 +270,5 @@ return [
             'currency-yen' => 'FontAwesome:yen',
         ],
     ],
+    'doctype' => 'HTML5'
 ];
