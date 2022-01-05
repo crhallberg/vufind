@@ -97,7 +97,7 @@
 
     <?php $lists = $user->getLists() ?>
     <?php foreach ($lists as $list): ?>
-      <a class="user-list-link" href="<?=$this->url('userList', ['id' => $list['id']])?>"<?=$this->active == 'list' . $list['id'] ? ' class="active"' : ''?>>
+      <a class="user-list-link<?=$this->active == 'list' . $list['id'] ? ' active' : ''?>" href="<?=$this->url('userList', ['id' => $list['id']])?>">
         <?=$this->icon('user-list') ?><?=$this->escapeHtml($list['title'])?><?=$list['public'] ? $publicInd : ''?>
         <span class="badge"><?=$list->cnt ?></span>
       </a>
