@@ -697,22 +697,24 @@ final class FavoritesTest extends \VuFindTest\Integration\MinkTestCase
             ];
             $hrefs[] = $link->getAttribute('href');
         }
+
         $expectedData = [
             ['text' => 'Future List 1', 'iconCount' => 0],
             ['text' => 'Login Test List 1', 'iconCount' => 0],
             ['text' => 'Test List (Public List) 1', 'iconCount' => 1],
         ];
+
         $this->assertEquals($expectedData, $data);
 
         // The "Future List" should NOT be public:
         $this->clickCss($page, 'a[href="' . $hrefs[0] . '"]');
         $this->snooze();
-        $this->assertEquals(0, count($page->findAll('css', '.user-list__public-icon')));
+        $this->assertEquals(0, count($page->findAll('css', '.mainbody .user-list__public-icon')));
 
         // The "Test List" SHOULD be public:
         $this->clickCss($page, 'a[href="' . $hrefs[2] . '"]');
         $this->snooze();
-        $this->assertEquals(1, count($page->findAll('css', '.user-list__public-icon')));
+        $this->assertEquals(1, count($page->findAll('css', '.mainbody .user-list__public-icon')));
     }
 
     /**
