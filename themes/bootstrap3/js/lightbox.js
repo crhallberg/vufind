@@ -221,6 +221,25 @@ VuFind.register('lightbox', function Lightbox() {
   }
 
   /**
+   * Common lightbox events and options
+   *
+   * data-lightbox-title: Overwrite the title of the lightbox
+   * data-lightbox-onclose: Function to run once when lightbox closed
+   */
+  function _parseLightboxOptions(el) {
+    // title
+    _lightboxTitle = el.data('lightbox-title') || _lightboxTitle || false;
+
+    // onclose behavior
+    if ('string' === typeof $(el).data('lightboxOnclose')) {
+      document.addEventListener('VuFind.lightbox.closed', function lightboxClosed(e) {
+        this.removeEventListener('VuFind.lightbox.closed', arguments.callee);
+        VuFind.evalCallback($(el).data('lightboxOnclose'), e, form);
+      }, false);
+    }
+  }
+
+  /**
    * Modal link data options
    *
    * data-lightbox-href = go to this url instead
@@ -232,20 +251,24 @@ VuFind.register('lightbox', function Lightbox() {
     var $link = $(this);
     var urlRoot = location.origin + VuFind.path;
 
-    if (typeof $link.data("lightboxIgnore") != "undefined"
-      || typeof $link.attr("href") === "undefined"
-      || $link.attr("href").charAt(0) === "#"
+    // Reasons to not intercept this link:
+    if (typeof $link.data("lightboxIgnore") != "undefined" // data-lightbox-ignore
+      || typeof $link.attr("href") === "undefined" // no href
+      || $link.attr("href").charAt(0) === "#" // local id target
       || $link.attr("href").match(/^[a-zA-Z]+:[^/]/) // ignore resource identifiers (mailto:, tel:, etc.)
       || ($link.attr("href").slice(0, 4) === "http" // external links
         && $link.attr("href").indexOf(urlRoot) === -1)
-      || (typeof $link.attr("target") !== "undefined"
+      || (typeof $link.attr("target") !== "undefined" // should open in new tab
         && (
           $link.attr("target").toLowerCase() === "_new"
           || $link.attr("target").toLowerCase() === "new"
         ))
     ) {
-      return true;
+      return true; // as you were
     }
+
+    _parseLightboxOptions($link);
+
     if (this.href.length > 1) {
       event.preventDefault();
       var obj = {url: $(this).data('lightbox-href') || this.href};
@@ -307,19 +330,10 @@ VuFind.register('lightbox', function Lightbox() {
         return ret;
       }
     }
-    // onclose behavior
-    if ('string' === typeof $(form).data('lightboxOnclose')) {
-      document.addEventListener('VuFind.lightbox.closed', function lightboxClosed(e) {
-        this.removeEventListener('VuFind.lightbox.closed', arguments.callee);
-        VuFind.evalCallback($(form).data('lightboxOnclose'), e, form);
-      }, false);
-    }
-    // Prevent multiple submission of submit button in lightbox
-    if (submit.closest(_modal).length > 0) {
-      submit.attr('disabled', 'disabled');
-    }
-    // Store custom title
-    _lightboxTitle = submit.data('lightbox-title') || $(form).data('lightbox-title') || false;
+
+    _parseLightboxOptions(form);
+    _parseLightboxOptions(submit);
+
     // Get Lightbox content
     ajax({
       url: $(form).attr('action') || _currentUrl || window.location.href,
