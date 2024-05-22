@@ -432,8 +432,11 @@ var VuFind = (function VuFind() {
 
   var init = function init() {
     for (var i = 0; i < _submodules.length; i++) {
-      if (this[_submodules[i]].init) {
-        this[_submodules[i]].init();
+      const name = _submodules[i];
+      const submodule = this[_submodules[i]];
+      if (submodule.init) {
+        submodule.init();
+        emit("init", { name, module });
       }
     }
     _initialized = true;
@@ -745,6 +748,8 @@ function setupMultiILSLoginFields(loginMethods, idPrefix) {
 document.addEventListener('DOMContentLoaded', () => {
   // Start up all of our submodules
   VuFind.init();
+  VuFind.emit("ready");
+
   // Off canvas
   setupOffcanvas();
 
