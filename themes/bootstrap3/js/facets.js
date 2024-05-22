@@ -174,7 +174,7 @@ VuFind.register('sideFacets', function SideFacets() {
           $facetContainer.find('.facet-load-indicator').remove();
         });
         VuFind.lightbox.bind($('.sidebar'));
-        VuFind.emit('VuFind.sidefacets.loaded');
+        VuFind.emit('sidefacets.loaded');
       })
       .fail(function onGetSideFacetsFail() {
         $container.find('.facet-load-indicator').remove();
@@ -308,4 +308,4 @@ function registerSideFacetTruncation() {
   VuFind.truncate.initTruncate('.truncate-hierarchical-facets', '> li');
 }
 
-VuFind.listen('VuFind.sidefacets.loaded', registerSideFacetTruncation);
+VuFind.listen('sidefacets.loaded', registerSideFacetTruncation);
