@@ -5,20 +5,33 @@
 # Vim temporary files
 .*.sw[po]
 
+# local config
+local/DirLocations.ini
+local/config/vufind.bak
+local/config/vufind/*
+!local/config/vufind/README.txt
+
+# dependencies
+composer.phar
+/downloads
+node_modules
+package-lock.json
+themes/bootstrap5/css/vendor
+themes/bootstrap5/js/vendor
+themes/bootstrap5/scss/vendor
+/vendor
+
+# QA files
 .php_cs_cache
 .phpmd.result-cache.php
 .phpstan_cache
 .rector
 .vagrant
 .vscode/*
-/downloads
-/Gruntfile.local.js
 /solr/vendor
 /themes/minktest
-/vendor
 ChangeLog
 /TAGS
-composer.phar
 env.bat
 env.sh
 import/solrmarc.log*
@@ -27,8 +40,3 @@ module/VuFind/tests/.phpunit*
 node_modules
 public/swagger-ui
 tests/phpcs.cache.json
-themes/bootstrap5/scss/vendor/bootstrap
-local/DirLocations.ini
-local/config/vufind.bak
-local/config/vufind/*
-!local/config/vufind/README.txt
