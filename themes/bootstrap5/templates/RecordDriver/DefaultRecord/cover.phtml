@@ -1,3 +1,37 @@
+<?php ob_start(); /* buffer image content */ ?>
+  <?php
+    $imgAttrs = [
+      'class' => 'recordcover',
+      'src' => $this->cover === false ? $this->url('cover-unavailable') : $this->cover,
+      'alt' => $this->translate($this->cover === false ? 'No Cover Image' : 'Cover Image'),
+    ];
+    if ($linkPreview) {
+      $imgAttrs['data-linkpreview'] = 'true';
+    }
+  ?>
+  <?php if ($this->cover || $this->cover === false): ?>
+    <img <?=$this->htmlAttributes($imgAttrs)?>>
+  <?php else: ?>
+    <?php
+      // ajax covers
+      $imgAttrs = array_merge($imgAttrs, [
+        'alt' => $this->translate('Cover Image'),
+        'class' => 'recordcover ajax',
+        'data-context' => $this->context,
+        'data-recordsource' => $driver->getSourceIdentifier(),
+        'data-recordid' => $driver->getUniqueID(),
+        'data-coversize' => $size,
+      ]);
+    ?>
+    <div class="ajaxcover">
+      <div class="spinner"><?=$this->icon('spinner') ?></div>
+      <div class="cover-container">
+        <img <?=$this->htmlAttributes($imgAttrs)?>>
+      </div>
+    </div>
+  <?php endif; ?>
+<?php $imageBuffer = ob_get_clean(); ?>
+
 <?php
   // Determine link attributes; use legacy $this->link property as a fallback for backward compatibility.
   $linkAttributes = $this->linkAttributes ?? ($this->link ? ['href' => $this->link] : []);
@@ -6,21 +40,7 @@
   }
 ?>
 <?php if ($linkAttributes): ?>
-  <a<?=$this->htmlAttributes($linkAttributes)?>>
+  <a <?=$this->htmlAttributes($linkAttributes)?>><?=$imageBuffer ?></a>
 <?php else: ?>
-  <div aria-hidden="true">
+  <div aria-hidden="true"><?=$imageBuffer ?></div>
 <?php endif; ?>
-<?php /* Display thumbnail if appropriate: */ ?>
-<?php if ($cover): ?>
-  <img src="<?=$this->escapeHtmlAttr($cover); ?>" <?php if ($linkPreview): ?>data-linkpreview="true" <?php endif; ?>class="recordcover" alt="<?=$this->transEscAttr('Cover Image') ?>">
-<?php elseif ($cover === false): ?>
-  <img src="<?=$this->url('cover-unavailable')?>" <?php if ($linkPreview): ?>data-linkpreview="true" <?php endif; ?>class="recordcover" alt="<?=$this->transEscAttr('No Cover Image') ?>">
-<?php else: ?>
-  <div class="ajaxcover">
-    <div class="spinner"><?=$this->icon('spinner') ?> <?=$this->translate('loading_ellipsis')?></div>
-    <div class="cover-container">
-      <img <?php if ($linkPreview): ?>data-linkpreview="true" <?php endif; ?>data-context="<?=$this->escapeHtmlAttr($this->context)?>" data-recordsource="<?=$this->escapeHtmlAttr($driver->getSourceIdentifier())?>" data-recordid="<?=$this->escapeHtmlAttr($driver->getUniqueID())?>" data-coversize="<?=$this->escapeHtmlAttr($size)?>" class="recordcover ajax" alt="<?=$this->transEscAttr('Cover Image') ?>">
-    </div>
-  </div>
-<?php endif; ?>
-<?php if ($linkAttributes): ?></a><?php else: ?></div><?php endif; ?>
