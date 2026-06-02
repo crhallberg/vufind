@@ -13,6 +13,11 @@ console.log('Copying dependencies...');
 // Bootstrap 5
 await cp('node_modules/bootstrap/scss/.', 'scss/vendor/bootstrap/', { recursive: true });
 
+// Font Awesome
+await cp('node_modules/@fortawesome/fontawesome-free/scss/.', 'scss/vendor/font-awesome/', { recursive: true });
+await cp('node_modules/@fortawesome/fontawesome-free/webfonts/.', 'css/vendor/font-awesome/webfonts/', { recursive: true });
+await copyFile('node_modules/@fortawesome/fontawesome-free/css/all.min.css', 'css/vendor/font-awesome/css/all.min.css');
+
 if (buildDepsOnly) {
     console.log('Done copying build dependencies.');
     process.exit();
